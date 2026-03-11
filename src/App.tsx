@@ -1,0 +1,101 @@
+import "./App.css";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "./context/useAuth";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { EditEvent } from "./pages/EditEvent";
+import { CreateEvent } from "./pages/CreateEvent";
+import { MyReservations } from "./pages/MyReservations";
+import { Toaster } from "react-hot-toast";
+import { Profile } from "./pages/Profile";
+import { ProtectedRoute } from "./pages/components/ProtectedRoute";
+import { Layout } from "./layout/Layout";
+import { EventPage } from "./pages/EventPage";
+import { Upcoming } from "./pages/Upcoming";
+
+function App() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading..</div>;
+  }
+
+  return (
+    <>
+      <Routes>
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/home" />}
+        />
+
+        <Route element={<Layout />}>
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/event/:eventId"
+            element={
+              <ProtectedRoute>
+                <EventPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/create-event"
+            element={
+              <ProtectedRoute>
+                <CreateEvent />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/edit-event/:eventId"
+            element={
+              <ProtectedRoute>
+                <EditEvent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/upcoming"
+            element={
+              <ProtectedRoute>
+                <Upcoming />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reservations"
+            element={
+              <ProtectedRoute>
+                <MyReservations />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<Navigate to={user ? "/home" : "/login"} />} />
+      </Routes>
+      <Toaster position="top-right" />
+    </>
+  );
+}
+
+export default App;
