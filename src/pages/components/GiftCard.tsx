@@ -3,7 +3,6 @@ import { db } from "../../firebase/firestore";
 import { useAuth } from "../../context/useAuth";
 import toast from "react-hot-toast";
 import type { Gift } from "../types/gift";
-import { cancelReservation } from "../services/reservationService";
 
 type Props = {
   gift: Gift;

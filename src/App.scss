@@ -1,0 +1,53 @@
+.app {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  color: $color-text-main;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  &__circle {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+
+    &--top {
+      background: #b8f3e0;
+      top: 56px;
+      left: 50%;
+      transform: translate(-50%, 0%);
+    }
+
+    &--mid {
+      background: #b9c4ff;
+      top: 187px;
+      left: 30px;
+    }
+
+    &--bottom {
+      background: #ffb7d1;
+      bottom: 0px;
+      right: 90px;
+    }
+  }
+}

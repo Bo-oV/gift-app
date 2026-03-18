@@ -1,3 +1,4 @@
+import type { Timestamp } from "firebase/firestore";
 import type { VisitedEvent } from "../types/visitedEvent";
 
 const STORAGE_KEY = "visitedEvents";
@@ -21,7 +22,7 @@ const saveVisitedEvents = (events: VisitedEvent[]) => {
 export const addVisitedEvent = (event: {
   eventId: string;
   title: string;
-  date: string;
+  date: Timestamp;
 }) => {
   const events = getVisitedEvents();
 
@@ -34,6 +35,7 @@ export const addVisitedEvent = (event: {
   } else {
     events.push({
       ...event,
+      date: event.date.toMillis(),
       visitedAt: Date.now(),
     });
   }

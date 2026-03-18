@@ -1,36 +1,61 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { Home, History, Gift, User, Plus } from "lucide-react";
+import "../layout/bottomNavigation.scss";
 
 export const BottomNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
-    <div>
+    <nav className="bottom-nav">
       <button
+        className={`bottom-nav__item ${
+          location.pathname === "/home" ? "bottom-nav__item--active" : ""
+        }`}
         onClick={() => navigate("/home")}
-        disabled={location.pathname === "/home"}
       >
-        Home
-      </button>
-      <button
-        onClick={() => navigate("/upcoming")}
-        disabled={location.pathname === "/upcoming"}
-      >
-        Upcoming
-      </button>
-      <button
-        onClick={() => navigate("/reservations")}
-        disabled={location.pathname === "/reservations"}
-      >
-        Reservations
+        <Home size={24} />
       </button>
 
       <button
-        onClick={() => navigate("/profile")}
-        disabled={location.pathname === "/profile"}
+        className={`bottom-nav__item ${
+          location.pathname === "/upcoming" ? "bottom-nav__item--active" : ""
+        }`}
+        onClick={() => navigate("/upcoming")}
       >
-        Profile
+        <History size={24} />
       </button>
-    </div>
+
+      <button
+        className="bottom-nav__create "
+        onClick={() => navigate("/create-event")}
+        disabled={
+          location.pathname === "/create-event" ||
+          location.pathname.startsWith("/event")
+        }
+      >
+        <Plus size={28} />
+      </button>
+
+      <button
+        className={`bottom-nav__item ${
+          location.pathname === "/reservations"
+            ? "bottom-nav__item--active"
+            : ""
+        }`}
+        onClick={() => navigate("/reservations")}
+      >
+        <Gift size={24} />
+      </button>
+
+      <button
+        className={`bottom-nav__item ${
+          location.pathname === "/profile" ? "bottom-nav__item--active" : ""
+        }`}
+        onClick={() => navigate("/profile")}
+      >
+        <User size={24} />
+      </button>
+    </nav>
   );
 };

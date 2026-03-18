@@ -1,0 +1,106 @@
+.event-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: $color-white;
+  line-height: $line-height-header;
+  border: solid $color-white 1px;
+  margin: 16px;
+
+  box-shadow: 0 6px 24px rgba($color-text-main, 0.12);
+  //#region style section
+  &--pink {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#ff78a0, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  &--pink {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#ff78a0, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  &--purple {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#c6b7ff, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  &--blue {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#9ed2ff, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  &--green {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#8fe5c2, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  &--yellow {
+    background-image: radial-gradient(
+      circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+      rgba(#ffbfa3, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  //#endregion
+
+  cursor: pointer;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 400;
+    color: $color-text-main;
+  }
+
+  &__header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  &__gifts {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: $color-text-second;
+    svg {
+      stroke-width: 1;
+    }
+  }
+
+  &__date {
+    margin-top: 6px;
+    color: $color-text-second;
+  }
+}
+
+.form-actions {
+  margin-top: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}

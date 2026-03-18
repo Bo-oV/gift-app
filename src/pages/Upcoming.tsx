@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { getVisitedEvents } from "./services/visitedEventsService";
 import type { VisitedEvent } from "./types/visitedEvent";
+import { UpcomingCard } from "./components/UpcomingCard";
 
 export const Upcoming = () => {
   const events: VisitedEvent[] = getVisitedEvents();
@@ -8,17 +9,20 @@ export const Upcoming = () => {
 
   return (
     <div>
-      <h1>Upcoming events</h1>
-
-      {events.map((event) => (
-        <button
-          key={event.eventId}
-          onClick={() => navigate(`/event/${event.eventId}`)}
-        >
-          <p>{event.title}</p>
-          <p>{new Date(event.date).toLocaleDateString()}</p>
-        </button>
-      ))}
+      {events.length === 0 ? (
+        <p>No viewed events yet</p>
+      ) : (
+        events.map((event) => (
+          <UpcomingCard
+            key={event.eventId}
+            title={event.title}
+            date={event.date}
+            reserved={0}
+            total={0}
+            onClick={() => navigate(`/event/${event.eventId}`)}
+          />
+        ))
+      )}
     </div>
   );
 };

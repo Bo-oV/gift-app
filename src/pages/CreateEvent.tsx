@@ -13,7 +13,7 @@ export const CreateEvent = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleCreateEvent = async (title: string, date: string) => {
+  const handleCreateEvent = async (title: string, date: Date) => {
     if (!user) return;
 
     const eventDate = Timestamp.fromDate(new Date(date));
@@ -28,5 +28,5 @@ export const CreateEvent = () => {
     navigate(`/event/${docRef.id}`);
   };
 
-  return <EventForm onSubmit={handleCreateEvent} titleText="Create Event" />;
+  return <EventForm onSubmit={handleCreateEvent} />;
 };

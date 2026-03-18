@@ -67,7 +67,7 @@ export const EditEvent = () => {
     loadEvent();
   }, [eventId]);
 
-  const handleUpdate = async (title: string, date: string) => {
+  const handleUpdate = async (title: string, date: Date) => {
     if (!eventId) return;
 
     const eventRef = doc(db, "events", eventId);
@@ -89,7 +89,6 @@ export const EditEvent = () => {
       initialTitle={title}
       initialDate={date}
       onSubmit={handleUpdate}
-      titleText="Edit Event"
       onDelete={handleDeleteEvent}
     />
   );

@@ -1,6 +1,6 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import type { Gift } from "../types/gift";
-import { db } from "../../firebase/firestore";
+import { db } from "@/firebase/firestore";
 
 export const subscribeToGifts = (
   eventId: string,

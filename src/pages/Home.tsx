@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/useAuth";
 import { db } from "../firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { EventCard } from "./components/EventCard";
 
 type EventType = {
@@ -23,8 +22,6 @@ export const Home = () => {
 
   const [events, setEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (authLoading) return;
@@ -53,20 +50,19 @@ export const Home = () => {
 
   return (
     <div>
-      <h1>My Events</h1>
       {events.length === 0 ? (
         <p>No events yet</p>
       ) : (
-        events.map((event) => (
+        events.map((event, index) => (
           <EventCard
             key={event.id}
             id={event.id}
             title={event.title}
             date={event.date}
+            index={index}
           />
         ))
       )}
-      <button onClick={() => navigate("/create-event")}>Create Event</button>
     </div>
   );
 };

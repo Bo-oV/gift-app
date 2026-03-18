@@ -46,11 +46,14 @@ export const EventPage = () => {
         }
 
         setEvent(event);
-        addVisitedEvent({
-          eventId: eventId,
-          title: event.title,
-          date: event.date.toDate().toISOString(),
-        });
+
+        if (user && event.ownerId !== user.uid) {
+          addVisitedEvent({
+            eventId: eventId,
+            title: event.title,
+            date: event.date.toDate().toISOString(),
+          });
+        }
       } catch (err) {
         setError("Something went wrong");
         console.error(err);

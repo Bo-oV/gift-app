@@ -1,0 +1,43 @@
+.textarea {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.textarea__label {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.textarea__control {
+  width: 100%;
+  min-height: 110px;
+
+  padding: 16px;
+
+  border-radius: 16px;
+  border: 2px solid transparent;
+
+  background: #f3f3f3;
+
+  font-size: 16px;
+  font-family: inherit;
+
+  resize: none;
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.textarea__control:focus {
+  border-color: #6a5cff;
+}
+
+/* лічильник символів */
+
+.textarea__counter {
+  align-self: flex-end;
+
+  font-size: 12px;
+  color: #9ca3af;
+}

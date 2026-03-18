@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/useAuth";
 import { Home } from "./pages/Home";
@@ -21,7 +21,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="app">
       <Routes>
         <Route
           path="/login"
@@ -94,7 +94,12 @@ function App() {
         <Route path="*" element={<Navigate to={user ? "/home" : "/login"} />} />
       </Routes>
       <Toaster position="top-right" />
-    </>
+      <div className="background">
+        <div className="background__circle background__circle--top"></div>
+        <div className="background__circle background__circle--mid"></div>
+        <div className="background__circle background__circle--bottom"></div>
+      </div>
+    </div>
   );
 }
 

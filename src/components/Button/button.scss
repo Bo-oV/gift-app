@@ -1,0 +1,76 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
+  padding: 16px 12px;
+
+  width: 137px;
+  height: 40px;
+
+  border-radius: 10px;
+  border: none;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  box-shadow: 0 2px 12px rgba(#000000, 0.06);
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    svg {
+      stroke-width: 1;
+      color: $color-text-main;
+    }
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: $line-height-button;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.button--secondary {
+  background: $color-white;
+}
+
+.button--primary {
+  background: linear-gradient(135deg, #6a5cff, #ff6fa9);
+  color: white;
+}
+
+/* danger */
+
+.button--danger {
+  background: #ffecec;
+  color: #ff3b3b;
+}
+
+.button--ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.button--default {
+  color: $color-text-main;
+}
+
+.button--dark {
+  color: #ffffff;
+}

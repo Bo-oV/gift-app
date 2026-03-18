@@ -1,0 +1,57 @@
+.reservation-card {
+  background: #f3f3f3;
+  border-radius: 20px;
+
+  padding: 16px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2e2e2e;
+  }
+
+  /* нижній блок */
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 14px;
+    color: #9ca3af;
+  }
+
+  &__date {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+  }
+}
