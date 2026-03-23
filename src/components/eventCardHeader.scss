@@ -1,0 +1,33 @@
+.event-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  &__title {
+    font-size: 16px;
+    font-weight: 400;
+    color: $color-text-main;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    color: $color-text-second;
+  }
+
+  &__count {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    svg {
+      stroke-width: 1;
+    }
+  }
+
+  &__date {
+  }
+}

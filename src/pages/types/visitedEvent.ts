@@ -1,6 +1,6 @@
 export interface VisitedEvent {
   eventId: string;
   title: string;
-  date: string;
+  date: number;
   visitedAt: number;
 }

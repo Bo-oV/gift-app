@@ -1,0 +1,30 @@
+$radial-gradient-circle-x: -10%;
+$radial-gradient-circle-y: -50%;
+
+@mixin card-color($color) {
+  background-image: radial-gradient(
+    circle at $radial-gradient-circle-x $radial-gradient-circle-y,
+    rgba($color, 0.4) 0%,
+    transparent 60%
+  );
+}
+
+.card--pink {
+  @include card-color(#ff78a0);
+}
+
+.card--purple {
+  @include card-color(#c6b7ff);
+}
+
+.card--blue {
+  @include card-color(#9ed2ff);
+}
+
+.card--green {
+  @include card-color(#8fe5c2);
+}
+
+.card--yellow {
+  @include card-color(#ffbfa3);
+}

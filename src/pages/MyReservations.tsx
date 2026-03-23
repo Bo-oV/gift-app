@@ -10,13 +10,14 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import toast from "react-hot-toast";
-import type { GiftReservation } from "./types/reservation";
 import { useNavigate } from "react-router-dom";
+import type { Reservation } from "./types/reservation";
+import { EventReservationCard } from "./components/EventReservationCard";
 
 export const MyReservations = () => {
   const { user } = useAuth();
 
-  const [gifts, setGifts] = useState<GiftReservation[]>([]);
+  const [gifts, setGifts] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -29,29 +30,40 @@ export const MyReservations = () => {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((docSnap) => {
+      const map = new Map();
+
+      for (const docSnap of snapshot.docs) {
         const giftData = docSnap.data();
         const eventId = docSnap.ref.parent.parent?.id as string;
 
-        return {
+        if (!map.has(eventId)) {
+          map.set(eventId, {
+            eventId,
+            eventTitle: giftData.eventTitle,
+            eventDate: giftData.eventDate,
+            gifts: [],
+          });
+        }
+
+        map.get(eventId).gifts.push({
           id: docSnap.id,
           title: giftData.title,
           description: giftData.description,
           reservedBy: giftData.reservedBy,
-          eventId,
-          eventTitle: giftData.eventTitle,
-        };
-      });
+          purchaseUrl: giftData.purchaseUrl,
+        });
+      }
 
-      setGifts(data);
+      setGifts(Array.from(map.values()));
       setLoading(false);
     });
 
     return () => unsubscribe();
+    console.log("unsubscribe");
   }, [user]);
 
-  const handleCancelReservation = async (gift: GiftReservation) => {
-    const giftRef = doc(db, "events", gift.eventId, "gifts", gift.id);
+  const handleCancelReservation = async (eventId: string, giftId: string) => {
+    const giftRef = doc(db, "events", eventId, "gifts", giftId);
 
     await updateDoc(giftRef, {
       reservedBy: null,
@@ -60,44 +72,36 @@ export const MyReservations = () => {
     toast.success("Reservation canceled");
   };
 
+  if (loading) {
+    return <p>Loading reservations...</p>;
+  }
+
+  if (gifts.length === 0) {
+    return <p>No reservations yet</p>;
+  }
+
   return (
     <div>
-      <h1>My Reservations</h1>
+      {gifts.map((event) => {
+        const total = event.gifts.length;
+        const reserved = event.gifts.filter((g) => g.reservedBy).length;
 
-      {loading ? (
-        <p>Loading reservations...</p>
-      ) : gifts.length === 0 ? (
-        <p>No reservations yet</p>
-      ) : (
-        gifts.map((gift) => (
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate(`/event/${gift.eventId}`)}
-            key={gift.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "16px",
-              marginBottom: "12px",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
-          >
-            <h3 style={{ marginBottom: "4px" }}>{gift.title}</h3>
-
-            <p style={{ fontSize: "14px", opacity: 0.7 }}>
-              Event: {gift.eventTitle}
-            </p>
-
-            <button
-              onClick={() => handleCancelReservation(gift)}
-              style={{ marginTop: "8px" }}
-            >
-              Cancel Reservation
-            </button>
-          </div>
-        ))
-      )}
+        return (
+          <EventReservationCard
+            eventId={event.eventId}
+            key={event.eventId}
+            title={event.eventTitle}
+            date={event.eventDate?.toDate().getTime()}
+            reserved={reserved}
+            total={total}
+            gifts={event.gifts}
+            onOpen={() => navigate(`/event/${event.eventId}`)}
+            onCancel={(giftId) =>
+              handleCancelReservation(event.eventId, giftId)
+            }
+          />
+        );
+      })}
     </div>
   );
 };

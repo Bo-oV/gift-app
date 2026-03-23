@@ -1,0 +1,45 @@
+.event-page {
+  padding: 16px;
+
+  &__add {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.event-header {
+  margin-bottom: 20px;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__meta {
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #8e8e93;
+  }
+}
+
+.gift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

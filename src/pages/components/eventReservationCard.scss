@@ -1,0 +1,13 @@
+@use "../../styles/card-colors";
+.reservation-card {
+  padding: 20px;
+  border-radius: 20px;
+
+  line-height: $line-height-header;
+  border: solid $white-button 1px;
+  margin: 16px;
+
+  box-shadow: 0 6px 24px rgba($color-text-main, 0.12);
+
+  cursor: pointer;
+}

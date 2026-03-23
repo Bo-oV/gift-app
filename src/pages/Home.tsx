@@ -53,13 +53,13 @@ export const Home = () => {
       {events.length === 0 ? (
         <p>No events yet</p>
       ) : (
-        events.map((event, index) => (
+        events.map((event) => (
           <EventCard
             key={event.id}
             id={event.id}
             title={event.title}
             date={event.date}
-            index={index}
+            eventId={event.id}
           />
         ))
       )}

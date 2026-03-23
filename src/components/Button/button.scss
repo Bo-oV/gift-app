@@ -47,12 +47,12 @@
 }
 
 .button--secondary {
-  background: $color-white;
+  background: $white-button;
 }
 
 .button--primary {
   background: linear-gradient(135deg, #6a5cff, #ff6fa9);
-  color: white;
+  color: $white-button;
 }
 
 /* danger */
@@ -65,10 +65,11 @@
 .button--ghost {
   background: transparent;
   box-shadow: none;
+  background: $white-button;
 }
 
 .button--default {
-  color: $color-text-main;
+  background: $white-button;
 }
 
 .button--dark {

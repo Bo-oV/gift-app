@@ -1,7 +1,6 @@
 import { IconButton } from "@/components/Button/IconButton";
 import "./upcomingCard.scss";
-import { Link2, Gift } from "lucide-react";
-import type { Timestamp } from "firebase/firestore";
+import { Gift, Link } from "lucide-react";
 
 type Props = {
   title: string;
@@ -19,28 +18,28 @@ export const UpcomingCard = ({
   onClick,
 }: Props) => {
   return (
-    <div className="reservation-card" onClick={onClick}>
-      <div className="reservation-card__content">
+    <div className="upcoming-card" onClick={onClick}>
+      <div className="upcoming-card__content">
         {/* LEFT */}
-        <div className="reservation-card__left">
-          <h3 className="reservation-card__title">{title}</h3>
+        <div className="upcoming-card__left">
+          <h3 className="upcoming-card__title">{title}</h3>
 
-          <div className="reservation-card__meta">
-            <span className="reservation-card__count">
+          <div className="upcoming-card__meta">
+            <span className="upcoming-card__count">
               {reserved}/{total}
               <Gift size={14} />
             </span>
 
-            <span className="reservation-card__date">
-              {new Date(date).toLocaleDateString()}
+            <span className="upcoming-card__date">
+              {new Date(date).toLocaleDateString("uk-UA")}
             </span>
           </div>
         </div>
 
         {/* RIGHT */}
-        <div className="reservation-card__right">
+        <div className="upcoming-card__right">
           <IconButton
-            icon={<Link2 size={18} />}
+            icon={<Link size={16} />}
             ariaLabel="Open event"
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.stopPropagation();

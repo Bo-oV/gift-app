@@ -51,7 +51,7 @@ export const EventPage = () => {
           addVisitedEvent({
             eventId: eventId,
             title: event.title,
-            date: event.date.toDate().toISOString(),
+            date: event.date.toMillis(),
           });
         }
       } catch (err) {
@@ -75,7 +75,10 @@ export const EventPage = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (!event) return null;
+  if (!event) {
+    console.error("Event missing");
+    return;
+  }
 
   return (
     <div>
@@ -105,8 +108,12 @@ export const EventPage = () => {
         ))
       )}
 
-      {showAddGift && eventId && (
-        <AddGiftModal eventId={eventId} onClose={() => setShowAddGift(false)} />
+      {showAddGift && eventId && event && (
+        <AddGiftModal
+          eventId={eventId}
+          event={event}
+          onClose={() => setShowAddGift(false)}
+        />
       )}
 
       {event.ownerId === user?.uid && (

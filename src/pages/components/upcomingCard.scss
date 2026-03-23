@@ -1,11 +1,13 @@
-.reservation-card {
-  background: #f3f3f3;
-  border-radius: 20px;
+.upcoming-card {
+  background-color: $color-white;
+  border-radius: 18px;
 
   padding: 16px;
+  margin: 16px;
   cursor: pointer;
 
   transition: all 0.2s ease;
+  box-shadow: 0 6px 24px rgba($color-text-main, 0.12);
 
   &:active {
     transform: scale(0.98);
@@ -26,32 +28,34 @@
   &__title {
     font-size: 16px;
     font-weight: 500;
-    color: #2e2e2e;
+    color: $color-text-main;
   }
 
-  /* нижній блок */
   &__meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
+    color: $color-text-second;
+    font-size: 14px;
   }
 
   &__count {
     display: flex;
     align-items: center;
     gap: 6px;
-
-    font-size: 14px;
-    color: #9ca3af;
   }
 
-  &__date {
-    font-size: 14px;
-    color: #9ca3af;
-  }
+  // &__date {
+  // }
 
   &__right {
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 12px;
+
+    svg {
+      stroke-width: 2;
+    }
   }
 }
