@@ -5,6 +5,7 @@ import { Button } from "@/components/Button/Button";
 import { DateInput } from "@/components/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
 import "../components/eventForm.scss";
+
 type Props = {
   initialTitle?: string;
   initialDate?: string;
@@ -69,20 +70,31 @@ export const EventForm = ({
       <div className="form-actions">
         <Button text="Назад" variant="ghost" onClick={() => navigate("/")} />
 
-        <Button
-          text="Створити"
-          icon={<Check size={20} />}
-          onClick={handleSubmit}
-          disabled={!isFormValid || isSubmitting}
-        />
+        {!onDelete ? (
+          <Button
+            text="Створити"
+            icon={<Check size={20} />}
+            onClick={handleSubmit}
+            disabled={!isFormValid || isSubmitting}
+          />
+        ) : (
+          <Button
+            text="Зберегти"
+            icon={<Check size={20} />}
+            onClick={handleSubmit}
+            disabled={!isFormValid || isSubmitting}
+          />
+        )}
       </div>
       {onDelete && (
-        <Button
-          text="Видалити"
-          icon={<Trash size={18} />}
-          variant="danger"
-          onClick={onDelete}
-        />
+        <div className="form-actions__delete">
+          <Button
+            text="Видалити"
+            icon={<Trash size={18} />}
+            variant="danger"
+            onClick={onDelete}
+          />
+        </div>
       )}
     </div>
   );

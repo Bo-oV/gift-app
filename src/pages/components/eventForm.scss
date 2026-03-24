@@ -4,3 +4,14 @@
   font-weight: 300;
   margin-left: 16px;
 }
+.form-actions__delete {
+  position: fixed;
+  bottom: 140px;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.form-actions {
+  gap: 48px;
+}

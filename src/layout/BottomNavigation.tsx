@@ -31,7 +31,8 @@ export const BottomNavigation = () => {
         onClick={() => navigate("/create-event")}
         disabled={
           location.pathname === "/create-event" ||
-          location.pathname.startsWith("/event")
+          location.pathname.startsWith("/event") ||
+          location.pathname.startsWith("/edit-event")
         }
       >
         <Plus size={28} />

@@ -1,15 +1,14 @@
 .button {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: flex-start;
   gap: 10px;
   padding: 16px 12px;
 
-  width: 137px;
+  width: auto;
   height: 40px;
-
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
 
   font-size: 16px;
   font-weight: 500;
@@ -25,7 +24,7 @@
     width: 16px;
     height: 16px;
     svg {
-      stroke-width: 1;
+      stroke-width: 1.6;
       color: $color-text-main;
     }
   }
@@ -34,6 +33,10 @@
     font-size: 14px;
     font-weight: 400;
     line-height: $line-height-button;
+    color: $color-text-main;
+    &--danger {
+      color: $color-active;
+    }
   }
 
   &:active {
@@ -44,34 +47,23 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &--danger {
+    background: transparent;
+    svg {
+      color: $color-active;
+    }
+    box-shadow: none;
+  }
+  &--primary {
+    background: linear-gradient(135deg, #6a5cff, #ff6fa9);
+    color: $white-button;
+  }
+  &--ghost {
+    box-shadow: none;
+  }
 }
 
 .button--secondary {
   background: $white-button;
-}
-
-.button--primary {
-  background: linear-gradient(135deg, #6a5cff, #ff6fa9);
-  color: $white-button;
-}
-
-/* danger */
-
-.button--danger {
-  background: #ffecec;
-  color: #ff3b3b;
-}
-
-.button--ghost {
-  background: transparent;
-  box-shadow: none;
-  background: $white-button;
-}
-
-.button--default {
-  background: $white-button;
-}
-
-.button--dark {
-  color: #ffffff;
 }
