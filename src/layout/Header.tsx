@@ -1,9 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+import { useUserProfile } from "@/context/UserContext";
+
 import "./header.scss";
 
 export const Header = () => {
   const { user } = useAuth();
+  const { profile } = useUserProfile();
   const location = useLocation();
 
   const titles: Record<string, string> = {
@@ -13,7 +16,11 @@ export const Header = () => {
     "/reservations": "Обрані подарунки",
     "/profile": "Профіль",
   };
-  console.log(user);
+
+  const getPhotoKey = (uid: string) => `user_photo_${uid}`;
+
+  const localPhoto =
+    profile?.photoURL || (user && localStorage.getItem(getPhotoKey(user.uid)));
 
   let pageTitle = titles[location.pathname] || "";
 
@@ -24,13 +31,21 @@ export const Header = () => {
   if (location.pathname.startsWith("/edit-event")) {
     pageTitle = "Редагувати подію";
   }
+
   return (
     <header className="header">
       <div className="header__info">
-        <h2 className="header__username">{user?.displayName}</h2>
+        <h2 className="header__username">
+          {profile?.displayName || user?.displayName || "User"}
+        </h2>
+
         <div className="header__avatar">
           <img
-            src={user?.photoURL?.replace("=s96-c", "=s200-c")}
+            src={
+              localPhoto ||
+              user?.photoURL ||
+              `https://ui-avatars.com/api/?name=${profile?.displayName || user?.displayName || "User"}`
+            }
             alt="avatar"
           />
         </div>

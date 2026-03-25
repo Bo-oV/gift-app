@@ -24,6 +24,7 @@ export const DateInput = ({ label, value, onChange, required }: Props) => {
       wrapperClassName="date-picker"
       calendarClassName="date-picker__calendar"
       popperClassName="date-picker__popper"
+      minDate={new Date()}
       customInput={
         <Input
           label={`${required ? "* " : ""}${label}`}

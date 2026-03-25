@@ -1,8 +1,16 @@
+.event-form {
+  display: flex;
+  flex-direction: column;
+  margin: 16px;
+  gap: 24px;
+}
 .text-info {
-  font-size: 12px;
+  display: flex;
+  font-size: 10px;
+  width: 100%;
   color: $color-text-second;
-  font-weight: 300;
-  margin-left: 16px;
+  justify-content: flex-end;
+  margin-top: 6px;
 }
 .form-actions__delete {
   position: fixed;

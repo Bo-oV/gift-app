@@ -1,5 +1,5 @@
-import "../components/giftItem.scss";
-import { ArrowRight, Gift, X } from "lucide-react";
+import "../components/giftCard.scss";
+import { Gift, Link, X } from "lucide-react";
 import { Button } from "@/components/Button/Button";
 
 type Props = {
@@ -30,22 +30,22 @@ export const GiftCard = ({
   const isMine = reservedBy === currentUserId;
 
   const stateClass = !isReserved
-    ? "gift-item--available"
+    ? "gift-card--available"
     : isMine
-      ? "gift-item--mine"
-      : "gift-item--taken";
+      ? "gift-card--mine"
+      : "gift-card--taken";
   return (
-    <div className={`gift-item ${stateClass}`}>
-      <div className="gift-item__info">
-        <h4>{title}</h4>
-        <p>{description}</p>
+    <div className={`gift-card ${stateClass}`}>
+      <div className="gift-card__info">
+        <h4 className="gift-card__title">{title}</h4>
+        <p className="gift-card__desc">{description}</p>
       </div>
 
-      <div className="gift-item__actions">
+      <div className="gift-card__actions">
         {/* ЛІНК */}
         <Button
-          text={link ? "Перейти" : "Немає посилання"}
-          icon={<ArrowRight size={16} />}
+          text={link ? "Перейти" : ""}
+          icon={link ? <Link size={16} /> : false}
           variant="ghost"
           disabled={!link}
           onClick={(e) => {
@@ -59,6 +59,7 @@ export const GiftCard = ({
           <Button
             text="Видалити"
             icon={<X size={16} />}
+            disabled={isReserved}
             variant="secondary"
             onClick={(e) => {
               e.stopPropagation();
@@ -70,7 +71,7 @@ export const GiftCard = ({
         {/* 👤 НЕ ВЛАСНИК */}
         {!isOwner && !isReserved && (
           <Button
-            text="Забронювати"
+            text="Обрати"
             icon={<Gift size={16} />}
             variant="primary"
             onClick={(e) => {
@@ -82,7 +83,7 @@ export const GiftCard = ({
 
         {!isOwner && isMine && (
           <Button
-            text="Скасувати"
+            text="Відмінити"
             icon={<X size={16} />}
             variant="secondary"
             onClick={(e) => {
@@ -93,7 +94,7 @@ export const GiftCard = ({
         )}
 
         {!isOwner && isReserved && !isMine && (
-          <Button text="Зайнято" variant="secondary" disabled />
+          <Button text="Вже обрано" variant="ghost" disabled />
         )}
       </div>
     </div>

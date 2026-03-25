@@ -2,11 +2,8 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
   cursor: pointer;
-  &__header {
-    margin-bottom: 20px;
-  }
 
   &__header-top {
     display: flex;
@@ -45,14 +42,15 @@
 
   &__add {
     position: fixed;
-    bottom: 120px;
+    bottom: 140px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 10;
   }
 }
 
 .gift-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }

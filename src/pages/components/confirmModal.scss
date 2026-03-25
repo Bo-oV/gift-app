@@ -1,0 +1,52 @@
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+
+    width: 90%;
+    max-width: 320px;
+
+    background: $color-white;
+    border-radius: 20px;
+    padding: 18px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  &__text {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  &__actions {
+    display: flex;
+    margin-top: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+  }
+}

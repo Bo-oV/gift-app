@@ -4,6 +4,7 @@ import {
   getFirestore,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import type { User } from "firebase/auth";
 import { app } from "./config";
@@ -22,4 +23,20 @@ export const createUserIfNotExists = async (user: User) => {
       createdAt: serverTimestamp(),
     });
   }
+};
+
+export const updateUserProfile = async (
+  uid: string,
+  data: { displayName?: string; photoURL?: string | null },
+) => {
+  const userRef = doc(db, "users", uid);
+
+  await updateDoc(userRef, data);
+};
+
+export const getUserProfile = async (uid: string) => {
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
+
+  return snap.data();
 };
