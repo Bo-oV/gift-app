@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/useAuth";
 import { db } from "../firebase/firestore";
 import { EventCard } from "./components/EventCard";
+import "../pages/home.scss";
+import { AppLoader } from "./components/AppLoader";
 
 type EventType = {
   id: string;
@@ -45,13 +47,23 @@ export const Home = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <AppLoader />;
   }
 
   return (
     <div>
       {events.length === 0 ? (
-        <p>No events yet</p>
+        <div className="empty-state">
+          <p className="empty-state__title">Подій ще немає</p>
+
+          <div className="empty-state__subtitle">
+            <p className="empty-state__subtitle--text">
+              Для створення події <br /> натисніть на
+            </p>
+
+            <span className="empty-state__subtitle--arrow">↓</span>
+          </div>
+        </div>
       ) : (
         events.map((event) => (
           <EventCard

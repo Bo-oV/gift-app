@@ -21,6 +21,7 @@ import {
   deleteGift,
   reserveGift,
 } from "./services/reservationService";
+import { AppLoader } from "./components/AppLoader";
 
 export const EventPage = () => {
   const { eventId } = useParams();
@@ -80,7 +81,7 @@ export const EventPage = () => {
   );
 
   const total = gifts.length;
-  if (loading || !event) return <div>Loading...</div>;
+  if (loading || !event) return <AppLoader />;
 
   return (
     <div className="event-page">

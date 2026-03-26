@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import type { Reservation } from "./types/reservation";
 import { EventReservationCard } from "./components/EventReservationCard";
+import { AppLoader } from "./components/AppLoader";
 
 export const MyReservations = () => {
   const { user } = useAuth();
@@ -59,7 +60,6 @@ export const MyReservations = () => {
     });
 
     return () => unsubscribe();
-    console.log("unsubscribe");
   }, [user]);
 
   const handleCancelReservation = async (eventId: string, giftId: string) => {
@@ -73,15 +73,15 @@ export const MyReservations = () => {
   };
 
   if (loading) {
-    return <p>Loading reservations...</p>;
+    return <AppLoader />;
   }
 
   if (gifts.length === 0) {
-    return <p>No reservations yet</p>;
+    return <p className="empty-state__title">Ще не обрано жодного подарунку</p>;
   }
 
   return (
-    <div>
+    <div className="reservations">
       {gifts.map((event) => {
         const total = event.gifts.length;
         const reserved = event.gifts.filter((g) => g.reservedBy).length;

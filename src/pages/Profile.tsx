@@ -6,7 +6,7 @@ import { Button } from "@/components/Button/Button";
 import { useAuth } from "@/context/useAuth";
 import { updateUserProfile } from "@/firebase/firestore";
 import { useUserProfile } from "@/context/UserContext";
-import { LogOut, Pencil, Save } from "lucide-react";
+import { LogOut, Pencil, Save, UserRound } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/auth";
 import { ConfirmModal } from "./components/ConfirmModal";
@@ -138,6 +138,7 @@ export const Profile = () => {
       </div>
 
       <Input
+        icon={<UserRound size={24} />}
         label="Ім'я користувача"
         value={name}
         onChange={(e) => setName(e.target.value)}

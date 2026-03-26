@@ -14,7 +14,7 @@ type Props = {
 export const ConfirmModal = ({
   title = "Підтвердження",
   text,
-  confirmText = "Підтвердити",
+  confirmText,
   cancelText = "Скасувати",
   onConfirm,
   onCancel,
@@ -30,12 +30,16 @@ export const ConfirmModal = ({
         <div className="confirm-modal__actions">
           <Button text={cancelText} variant="ghost" onClick={onCancel} />
 
-          <Button
-            icon={<LogOut size={12} />}
-            text={confirmText}
-            variant="secondary"
-            onClick={onConfirm}
-          />
+          {confirmText ? (
+            <Button
+              icon={<LogOut size={12} />}
+              text={confirmText}
+              variant="secondary"
+              onClick={onConfirm}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

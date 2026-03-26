@@ -1,0 +1,53 @@
+.app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  background: linear-gradient(135deg, #e0f2ff, #f3e8ff, #ffe4e6);
+}
+
+.heart-loader {
+  width: 80px;
+  height: 80px;
+
+  display: block;
+}
+
+.heart-loader__icon {
+  fill: #ff5a79;
+
+  transform-origin: center;
+  animation: heart-beat 1.2s ease-in-out infinite;
+}
+
+/* 🔥 ПУЛЬС ЯК У СЕРЦЯ */
+@keyframes heart-beat {
+  0% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.2);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.25);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
