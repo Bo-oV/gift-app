@@ -10,7 +10,6 @@ import { subscribeToGifts } from "../services/giftService";
 import type { Gift as Gifts } from "../types/gift";
 import { getColorClass } from "@/utils/getColorClass";
 import { EventCardHeader } from "@/components/EventCardHeader";
-import "@/components/eventCardHeader.scss";
 
 type Props = {
   id: string;

@@ -1,5 +1,5 @@
 import { Gift } from "lucide-react";
-
+import "../components/eventCardHeader.scss";
 type Props = {
   title: string;
   date?: string;

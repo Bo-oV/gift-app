@@ -21,11 +21,12 @@
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
+    color: $color-text-main;
   }
 
   &__subtitle {
     font-size: 14px;
-    color: #666;
     margin-bottom: 20px;
+    color: $color-text-main;
   }
 }

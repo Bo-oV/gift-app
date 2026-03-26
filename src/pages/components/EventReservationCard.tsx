@@ -2,7 +2,6 @@ import "./eventReservationCard.scss";
 import { GiftItem } from "./GiftItem";
 import { getColorClass } from "@/utils/getColorClass";
 import { EventCardHeader } from "@/components/EventCardHeader";
-import "@/components/eventCardHeader.scss";
 import type { GiftPreview } from "../types/giftPreview";
 
 type Props = {
