@@ -1,13 +1,10 @@
 import type { Timestamp } from "firebase/firestore";
+import type { Gift } from "./gift";
 
 export type Reservation = {
   eventId: string;
   eventTitle: string;
   eventDate?: Timestamp;
-  gifts: {
-    id: string;
-    title: string;
-    description: string;
-    reservedBy?: string | null;
-  }[];
+  gifts: Gift[];
+  myGifts: Gift[];
 };

@@ -8,10 +8,11 @@ import { CreateEvent } from "./pages/CreateEvent";
 import { MyReservations } from "./pages/MyReservations";
 import { Toaster } from "react-hot-toast";
 import { Profile } from "./pages/Profile";
-import { ProtectedRoute } from "./pages/components/ProtectedRoute";
+
 import { Layout } from "./layout/Layout";
 import { EventPage } from "./pages/EventPage";
 import { Upcoming } from "./pages/Upcoming";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 function App() {
   const { user, loading } = useAuth();
@@ -23,10 +24,7 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route
-          path="/login"
-          element={!user ? <Login /> : <Navigate to="/home" />}
-        />
+        <Route path="/login" element={<Login />} />
 
         <Route element={<Layout />}>
           <Route

@@ -7,6 +7,8 @@ import {
   doc,
   updateDoc,
   onSnapshot,
+  collection,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import toast from "react-hot-toast";
@@ -30,7 +32,7 @@ export const MyReservations = () => {
       where("reservedBy", "==", user.uid),
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
       const map = new Map();
 
       for (const docSnap of snapshot.docs) {
@@ -45,14 +47,24 @@ export const MyReservations = () => {
             gifts: [],
           });
         }
+      }
 
-        map.get(eventId).gifts.push({
-          id: docSnap.id,
-          title: giftData.title,
-          description: giftData.description,
-          reservedBy: giftData.reservedBy,
-          purchaseUrl: giftData.purchaseUrl,
-        });
+      for (const [eventId, eventData] of map) {
+        const giftsRef = collection(db, "events", eventId, "gifts");
+        const giftsSnap = await getDocs(giftsRef);
+
+        const allGifts = giftsSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        eventData.gifts = allGifts;
+        eventData.myGifts = snapshot.docs
+          .filter((doc) => doc.ref.parent.parent?.id === eventId)
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
       }
 
       setGifts(Array.from(map.values()));
@@ -94,7 +106,7 @@ export const MyReservations = () => {
             date={event.eventDate?.toDate().getTime()}
             reserved={reserved}
             total={total}
-            gifts={event.gifts}
+            gifts={event.myGifts}
             onOpen={() => navigate(`/event/${event.eventId}`)}
             onCancel={(giftId) =>
               handleCancelReservation(event.eventId, giftId)

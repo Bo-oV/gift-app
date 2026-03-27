@@ -54,7 +54,7 @@ export const GiftCard = ({
           }}
         />
 
-        {/* 👑 ВЛАСНИК */}
+        {/* ВЛАСНИК */}
         {isOwner && (
           <Button
             text="Видалити"
@@ -68,7 +68,7 @@ export const GiftCard = ({
           />
         )}
 
-        {/* 👤 НЕ ВЛАСНИК */}
+        {/*НЕ ВЛАСНИК */}
         {!isOwner && !isReserved && (
           <Button
             text="Обрати"

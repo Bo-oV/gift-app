@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 12px;
   cursor: pointer;
-
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
   &__header-top {
     display: flex;
     flex-direction: column;

@@ -18,7 +18,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  box-shadow: 0 2px 12px rgba(#000000, 0.06);
+  box-shadow: 0 2px 12px rgba($color-text-main, 0.24);
 
   &__icon {
     display: flex;
@@ -60,8 +60,8 @@
   &--primary {
     background: linear-gradient(135deg, #6a5cff, #ff6fa9);
     box-shadow:
-      0 8px 24px rgba($color-active, 0.2),
-      0 12px 40px rgba($color-active-second, 0.2),
+      0 4px 12px rgba($color-active, 0.2),
+      0 6px 20px rgba($color-active-second, 0.2),
       inset 0 3px 8px rgba($color-white, 0.25);
     span {
       color: $white-button;

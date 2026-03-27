@@ -51,7 +51,7 @@ export const Home = () => {
   }
 
   return (
-    <div>
+    <div className="home">
       {events.length === 0 ? (
         <div className="empty-state">
           <p className="empty-state__title">Подій ще немає</p>
