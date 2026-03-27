@@ -8,15 +8,24 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["icon-192.png", "icon-512.png"],
+
+      includeAssets: ["icon-192-v2.png", "icon-512-v2.png"],
+
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      },
+
       manifest: {
+        id: "/giftly",
         name: "Giftly",
         short_name: "Giftly",
-        start_url: "/",
+        start_url: "/?source=pwa",
         scope: "/",
         display: "standalone",
         background_color: "#ffffff",
         theme_color: "#ffffff",
+        orientation: "portrait",
+
         icons: [
           {
             src: "/icon-192.png",
