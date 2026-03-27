@@ -10,9 +10,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["icon-192.png", "icon-512.png"],
       manifest: {
-        name: "Gift Planner",
-        short_name: "Gifts",
+        name: "Giftly",
+        short_name: "Giftly",
         start_url: "/",
+        scope: "/",
         display: "standalone",
         background_color: "#ffffff",
         theme_color: "#ffffff",
