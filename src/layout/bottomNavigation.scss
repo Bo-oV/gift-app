@@ -1,3 +1,4 @@
+@import "../styles/animation.scss";
 .bottom-nav {
   display: grid;
   grid-template-columns: 1fr 1fr 80px 1fr 1fr;
@@ -60,7 +61,16 @@
 
     border-radius: 50%;
 
-    background: linear-gradient(135deg, $color-active, $color-active-second);
+    background: linear-gradient(
+      270deg,
+      #ff6b9c,
+      #f065b3,
+      #c05cff,
+      #7c5cff,
+      #ff6b9c
+    );
+    background-size: 400% 400%;
+    animation: gradientFlow 12s ease infinite;
 
     display: flex;
     align-items: center;

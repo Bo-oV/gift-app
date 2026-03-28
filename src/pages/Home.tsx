@@ -11,6 +11,8 @@ import { db } from "../firebase/firestore";
 import { EventCard } from "./components/EventCard";
 import "../pages/home.scss";
 import { AppLoader } from "./components/AppLoader";
+import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 type EventType = {
   id: string;
@@ -20,6 +22,7 @@ type EventType = {
 };
 
 export const Home = () => {
+  const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
 
   const [events, setEvents] = useState<EventType[]>([]);
@@ -54,15 +57,24 @@ export const Home = () => {
     <div className="home">
       {events.length === 0 ? (
         <div className="empty-state">
-          <p className="empty-state__title">Подій ще немає</p>
+          <p className="empty-state__title">
+            <span className="empty-state__emoji">🎉</span>
+            Створи <br />
+            свою першу подію
+          </p>
 
-          <div className="empty-state__subtitle">
-            <p className="empty-state__subtitle--text">
-              Для створення події <br /> натисніть на
-            </p>
+          <p className="empty-state__subtitle">
+            Запроси друзів та збери ідеї подарунків <br /> в одному місці
+          </p>
 
-            <span className="empty-state__subtitle--arrow">↓</span>
-          </div>
+          <button
+            className="empty-state__button"
+            onClick={() => {
+              navigate("/create-event");
+            }}
+          >
+            <Plus size={28} /> Створити подію
+          </button>
         </div>
       ) : (
         events.map((event) => (
