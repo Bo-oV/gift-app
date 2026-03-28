@@ -2,7 +2,6 @@ import type { Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/Button/Button";
 import { Pencil, Link } from "lucide-react";
-import { IconButton } from "@/components/Button/IconButton";
 import "../components/eventCard.scss";
 import { useEffect, useState } from "react";
 import { subscribeToGifts } from "../services/giftService";

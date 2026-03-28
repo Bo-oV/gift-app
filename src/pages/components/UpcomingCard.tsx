@@ -1,4 +1,3 @@
-import { IconButton } from "@/components/Button/IconButton";
 import "./upcomingCard.scss";
 import { Gift, Link } from "lucide-react";
 import { Button } from "@/components/Button/Button";

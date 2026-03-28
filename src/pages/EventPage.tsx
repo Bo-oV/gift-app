@@ -19,7 +19,6 @@ import {
 } from "./services/reservationService";
 
 import { Button } from "@/components/Button/Button";
-import { IconButton } from "@/components/Button/IconButton";
 import { GiftCard } from "./components/GiftCard";
 import { AppLoader } from "./components/AppLoader";
 
