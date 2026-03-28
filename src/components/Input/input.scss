@@ -50,6 +50,7 @@
 
     &::placeholder {
       color: $color-text-second;
+      font-size: 12px;
     }
 
     &:focus::placeholder {

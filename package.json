@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
+    "cheerio": "^1.2.0",
     "firebase": "^12.10.0",
     "lucide-react": "^1.7.0",
     "qrcode.react": "^4.2.0",

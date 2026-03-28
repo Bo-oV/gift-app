@@ -1,7 +1,5 @@
 .reservations {
-  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   padding-bottom: calc(140px + env(safe-area-inset-bottom));
 }

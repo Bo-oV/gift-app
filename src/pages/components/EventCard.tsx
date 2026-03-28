@@ -62,14 +62,23 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
       />
 
       <div className="event-card__actions">
-        <IconButton
+        <Button
+          text="Поділитися подією"
+          variant="primary"
+          icon={<Link size={16} />}
+          onClick={(e) => {
+            e.stopPropagation();
+            openShare(id);
+          }}
+        />
+        {/* <IconButton
           icon={<Link size={16} />}
           onClick={(e) => {
             e.stopPropagation();
             openShare(id);
           }}
           ariaLabel="Copy link"
-        />
+        /> */}
 
         <Button
           onClick={handleEdit}

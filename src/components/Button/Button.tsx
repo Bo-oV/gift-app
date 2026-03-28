@@ -11,7 +11,7 @@ ghost → текстова кнопка
 */
 
 type ButtonProps = {
-  text: string;
+  text?: string;
   icon?: ReactNode;
   variant?: Variant;
   disabled?: boolean;
@@ -32,8 +32,10 @@ export const Button = ({
       onClick={onClick}
     >
       {icon && <span className="button__icon">{icon}</span>}
-
-      <span className={`button__text button__text--${variant}`}>{text}</span>
+      {text ? (
+        <span className={`button__text button__text--${variant}`}>{text}</span>
+      ) : undefined}
+      {/* <span className={`button__text button__text--${variant}`}>{text}</span> */}
     </button>
   );
 };

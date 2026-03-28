@@ -1,11 +1,16 @@
 import "../components/giftCard.scss";
-import { Gift, Link, X } from "lucide-react";
+import { Gift, X } from "lucide-react";
 import { Button } from "@/components/Button/Button";
 
 type Props = {
   title: string;
   description: string;
   link?: string;
+  preview?: {
+    title?: string;
+    description?: string;
+    image?: string;
+  };
   reservedBy?: string | null;
   currentUserId?: string | null;
   ownerId: string;
@@ -18,6 +23,7 @@ export const GiftCard = ({
   title,
   description,
   link,
+  preview,
   reservedBy,
   currentUserId,
   ownerId,
@@ -35,26 +41,38 @@ export const GiftCard = ({
       ? "gift-card--mine"
       : "gift-card--taken";
   return (
-    <div className={`gift-card ${stateClass}`}>
-      <div className="gift-card__info">
-        <h4 className="gift-card__title">{title}</h4>
-        <p className="gift-card__desc">{description}</p>
+    <div
+      className={`gift-card ${stateClass}`}
+      onClick={() => {
+        if (link) window.open(link, "_blank");
+      }}
+    >
+      <div className="gift-card__content">
+        {/* PREVIEW */}
+        {preview?.image && (
+          <img
+            src={preview.image}
+            alt={preview.title}
+            className="gift-card__image"
+          />
+        )}
+
+        {/* TEXT */}
+        <div className="gift-card__info">
+          <h4 className="gift-card__title">{preview?.title || title}</h4>
+
+          <p className="gift-card__desc">
+            {preview?.description || description}
+          </p>
+
+          {link && (
+            <span className="gift-card__domain">{new URL(link).hostname}</span>
+          )}
+        </div>
       </div>
 
+      {/* ACTIONS */}
       <div className="gift-card__actions">
-        {/* ЛІНК */}
-        <Button
-          text={link ? "Перейти" : ""}
-          icon={link ? <Link size={16} /> : false}
-          variant="ghost"
-          disabled={!link}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (link) window.open(link, "_blank");
-          }}
-        />
-
-        {/* ВЛАСНИК */}
         {isOwner && (
           <Button
             text="Видалити"
@@ -68,7 +86,6 @@ export const GiftCard = ({
           />
         )}
 
-        {/*НЕ ВЛАСНИК */}
         {!isOwner && !isReserved && (
           <Button
             text="Обрати"

@@ -6,17 +6,11 @@ type Props = {
   title: string;
   description: string;
   link?: string;
-  onOpen: () => void;
+
   onCancel: () => void;
 };
 
-export const GiftItem = ({
-  title,
-  description,
-  onOpen,
-  onCancel,
-  link,
-}: Props) => {
+export const GiftItem = ({ title, description, onCancel, link }: Props) => {
   return (
     <div className="gift-item">
       <div className="gift-item__info">
@@ -25,21 +19,17 @@ export const GiftItem = ({
       </div>
 
       <div className="gift-item__actions">
-        <Button
-          text="Перейти"
-          icon={<ArrowRight size={16} />}
-          variant="ghost"
-          onClick={(e) => {
-            console.log("link:", link);
-            e.stopPropagation();
-
-            if (link) {
+        {link && (
+          <Button
+            text="Перейти"
+            icon={<ArrowRight size={16} />}
+            variant="ghost"
+            onClick={(e) => {
+              e.stopPropagation();
               window.open(link, "_blank");
-            } else {
-              onOpen();
-            }
-          }}
-        />
+            }}
+          />
+        )}
 
         <Button
           text="Відмінити"

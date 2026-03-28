@@ -50,7 +50,16 @@ export const Input = forwardRef<HTMLInputElement, Props>(
             onChange={onChange}
           />
 
-          {rightIcon && <span className="input__right-icon">{rightIcon}</span>}
+          {rightIcon && (
+            <span
+              className="input__right-icon"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onClick?.(e as unknown as React.MouseEvent<HTMLInputElement>);
+              }}
+            >
+              {rightIcon}
+            </span>
+          )}
         </div>
       </div>
     );

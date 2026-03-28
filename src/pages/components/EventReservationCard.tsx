@@ -66,10 +66,6 @@ export const EventReservationCard = ({
           title={gift.title}
           description={gift.description}
           link={gift.purchaseUrl}
-          onOpen={(e?: React.MouseEvent<HTMLButtonElement>) => {
-            e?.stopPropagation?.();
-            onOpen();
-          }}
           onCancel={(e?: React.MouseEvent<HTMLButtonElement>) => {
             e?.stopPropagation?.();
             onCancel(gift.id);

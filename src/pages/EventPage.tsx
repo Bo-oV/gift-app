@@ -138,7 +138,25 @@ export const EventPage = () => {
           </div>
 
           <div className="event-page__actions">
-            <IconButton
+            <Button
+              text="Поділитися подією"
+              variant="primary"
+              icon={<Link size={18} />}
+              onClick={(e) => {
+                e.stopPropagation();
+
+                if (!user) {
+                  setPendingAction({ type: "share" });
+                  openLoginModal(`Поділись подією 🎉`);
+                  return;
+                }
+
+                if (!eventId) return;
+
+                openShare(eventId);
+              }}
+            />
+            {/* <IconButton
               icon={<Link size={18} />}
               onClick={(e) => {
                 e.stopPropagation();
@@ -154,7 +172,7 @@ export const EventPage = () => {
                 openShare(eventId);
               }}
               ariaLabel="Share"
-            />
+            /> */}
 
             {event.ownerId === user?.uid && (
               <Button
@@ -176,6 +194,7 @@ export const EventPage = () => {
             title={gift.title}
             description={gift.description}
             link={gift.purchaseUrl}
+            preview={gift.preview}
             reservedBy={gift.reservedBy}
             currentUserId={user?.uid}
             ownerId={event.ownerId || ""}
@@ -223,7 +242,7 @@ export const EventPage = () => {
       {(event.ownerId === user?.uid || event.ownerId === null) && (
         <div className="event-page__add">
           <Button
-            text="Додати"
+            text="Додати подарунок"
             icon={<Plus size={16} />}
             variant="primary"
             onClick={() => setShowAddGift(true)}

@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import type { Reservation } from "./types/reservation";
 import { EventReservationCard } from "./components/EventReservationCard";
 import { AppLoader } from "./components/AppLoader";
+import "../pages/myReservations.scss";
 
 export const MyReservations = () => {
   const { user } = useAuth();

@@ -1,6 +1,7 @@
 import { IconButton } from "@/components/Button/IconButton";
 import "./upcomingCard.scss";
 import { Gift, Link } from "lucide-react";
+import { Button } from "@/components/Button/Button";
 
 type Props = {
   title: string;
@@ -38,14 +39,22 @@ export const UpcomingCard = ({
 
         {/* RIGHT */}
         <div className="upcoming-card__right">
-          <IconButton
+          <Button
+            variant="primary"
+            icon={<Link size={16} />}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              onClick?.();
+            }}
+          />
+          {/* <IconButton
             icon={<Link size={16} />}
             ariaLabel="Open event"
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.stopPropagation();
               onClick?.();
             }}
-          />
+          /> */}
         </div>
       </div>
     </div>

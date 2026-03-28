@@ -41,20 +41,23 @@
   /* input */
 
   &__control {
+    display: flex;
+    flex: 1;
     border: none;
     background: transparent;
 
     font-size: 16px;
     outline: none;
 
-    // &::placeholder {
-    //   color: $color-text-second;
-    //   transition: 0.2s;
-    // }
+    &::placeholder {
+      color: $color-text-second;
+      font-size: 12px;
+    }
 
     &:focus::placeholder {
       opacity: 0;
     }
+
     &:focus {
       border-color: #6a5cff;
     }
@@ -63,33 +66,19 @@
   /* кнопка */
 
   &__action {
-    padding: 6px 12px;
-
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px;
+    margin-left: auto;
     border: none;
     border-radius: 6px;
 
-    // background: rgba($color-text-second, 0.1);
     color: $color-text-main;
 
     font-size: 13px;
     font-weight: 500;
 
     cursor: pointer;
-
-    // transition: all 0.2s ease;
-
-    // &:hover {
-    //   background: rgba($color-active, 0.2);
-    // }
-
-    // &:active {
-    //   transform: scale(0.96);
-    // }
-
-    // &:disabled {
-    //   opacity: 0.5;
-    //   cursor: not-allowed;
-    // }
   }
 
   /* іконка */
