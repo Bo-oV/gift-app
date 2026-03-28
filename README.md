@@ -1,73 +1,141 @@
-# React + TypeScript + Vite
+# 🎁 Giftly — Event & Gift Planning App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Giftly — це вебдодаток для створення подій, запрошення гостей та керування списком подарунків.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Технології
 
-## React Compiler
+* ⚛️ React + TypeScript
+* ⚡ Vite
+* 🎨 SCSS (BEM methodology)
+* 🔥 Firebase (Auth + Database)
+* 📱 PWA (vite-plugin-pwa)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+---
 
-## Expanding the ESLint configuration
+## 📦 Запуск проєкту
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
+
+## 🏗️ Структура проєкту
+
+```
+src/
+ ├── components/     # UI компоненти
+ ├── pages/          # сторінки (EventPage, CreateEvent)
+ ├── services/       # робота з Firebase
+ ├── types/          # TypeScript типи
+ ├── styles/         # SCSS (BEM)
+```
+
+---
+
+## 🔐 Основний функціонал
+
+* 🔑 Авторизація через Google
+* 🎉 Створення подій
+* 👥 Запрошення користувачів
+* 🎁 Додавання подарунків
+* 🔗 Шеринг подій через лінк
+* 📱 PWA (встановлення як додаток)
+
+---
+
+## 🧹 ESLint (Production config)
+
+У проєкті використовується **type-aware linting** для кращої якості коду.
+
+### Конфігурація:
 
 ```js
-// eslint.config.js
+import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
 import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
+import globals from 'globals'
+import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'node_modules']),
+
+  js.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+
   {
     files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
+
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ['./tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
-      // other options...
+      globals: {
+        ...globals.browser,
+      },
+    },
+
+    plugins: {
+      'react-x': reactX,
+      'react-dom': reactDom,
+    },
+
+    rules: {
+      ...reactX.configs['recommended-typescript'].rules,
+      ...reactDom.configs.recommended.rules,
+
+      'react-x/jsx-no-leaked-render': 'warn',
+      'react-x/no-array-index-key': 'warn',
+
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
+
+      'no-console': 'warn',
     },
   },
 ])
 ```
+
+---
+
+## 📱 PWA
+
+Додаток підтримує встановлення на телефон через браузер.
+
+---
+
+## ⚠️ Відомі нюанси
+
+* Safari може не одразу відкривати deep links
+* PWA кеш може вимагати hard refresh
+
+---
+
+## 🛠️ Scripts
+
+```bash
+npm run dev       # запуск
+npm run build     # білд
+npm run preview   # перегляд білду
+```
+
+---
+
+## 📌 TODO
+
+* [ ] QR code для запрошень
+* [ ] Push notifications
+* [ ] Offline mode
+
+---
+
+## 👨‍💻 Автор
+
+Павло — Fullstack Developer (React + Firebase)
