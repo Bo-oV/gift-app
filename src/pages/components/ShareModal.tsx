@@ -3,7 +3,6 @@ import "../components/shareModal.scss";
 import { QRCodeCanvas } from "qrcode.react";
 import { IconButton } from "@/components/Button/IconButton";
 import { Link } from "lucide-react";
-import { X } from "lucide-react";
 type Props = {
   link: string;
   onClose: () => void;
