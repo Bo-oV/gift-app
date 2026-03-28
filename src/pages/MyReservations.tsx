@@ -59,7 +59,7 @@ export const MyReservations = () => {
             eventId,
             eventTitle: giftData.eventTitle,
             eventDate: giftData.eventDate,
-            ownerName: eventData?.ownerName, // ✅ ТЕПЕР ПРАЦЮЄ
+            ownerName: eventData?.ownerName,
             gifts: [],
           });
         }

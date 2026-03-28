@@ -13,12 +13,13 @@ import { Layout } from "./layout/Layout";
 import { EventPage } from "./pages/EventPage";
 import { Upcoming } from "./pages/Upcoming";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { AppLoader } from "./pages/components/AppLoader";
 
 function App() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <AppLoader />;
   }
 
   return (
