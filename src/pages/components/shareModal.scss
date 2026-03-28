@@ -1,0 +1,105 @@
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    align-items: center;
+    width: 90%;
+    max-width: 340px;
+
+    background: $color-white;
+    border-radius: 20px;
+    padding: 18px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+
+    animation: modalFade 0.2s ease;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: $color-text-main;
+  }
+
+  &__qr {
+    margin: 12px 0 16px;
+    display: flex;
+    justify-content: center;
+
+    canvas {
+      border-radius: 12px;
+    }
+  }
+
+  &__row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  &__link {
+    flex: 1;
+    padding: 10px 12px;
+
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    font-size: 13px;
+    color: $color-text-main;
+
+    background: $color-white;
+
+    outline: none;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: $color-white;
+    }
+  }
+
+  &__actions-row {
+    display: flex;
+    margin-bottom: 18px;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+/* Анімація ))) */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

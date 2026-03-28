@@ -14,14 +14,13 @@ export const CreateEvent = () => {
   const { user } = useAuth();
 
   const handleCreateEvent = async (title: string, date: Date) => {
-    if (!user) return;
-
     const eventDate = Timestamp.fromDate(new Date(date));
 
     const docRef = await addDoc(collection(db, "events"), {
       title,
       date: eventDate,
-      ownerId: user.uid,
+      ownerId: user ? user.uid : null,
+      ownerName: user?.displayName || "Guest",
       createdAt: serverTimestamp(),
     });
 

@@ -51,8 +51,8 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
       createdAt: serverTimestamp(),
       eventTitle: event.title,
       eventDate: event.date,
+      ownerName: event.ownerName ?? "Невідомий",
     });
-    toast.success("Gift added");
     setTitle("");
     setDescription("");
     setPurchaseUrl("");

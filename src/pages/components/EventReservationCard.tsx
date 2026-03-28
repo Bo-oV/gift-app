@@ -6,6 +6,7 @@ import type { GiftPreview } from "../types/giftPreview";
 
 type Props = {
   eventId: string;
+  ownerName?: string;
   title: string;
   date?: number;
   reserved: number;
@@ -17,6 +18,7 @@ type Props = {
 
 export const EventReservationCard = ({
   eventId,
+  ownerName,
   title,
   date,
   reserved,
@@ -38,6 +40,7 @@ export const EventReservationCard = ({
       <div className="reservation-card__content">
         {/* HEADER */}
         <EventCardHeader
+          ownerName={ownerName}
           title={title}
           date={formattedDate}
           reserved={reserved}

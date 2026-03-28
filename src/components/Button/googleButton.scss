@@ -19,7 +19,10 @@
   cursor: pointer;
   transition: all 0.25s ease;
 
-  box-shadow: 0 4px 20px rgba($color-active-second, 0.05);
+  box-shadow:
+    0 4px 12px rgba($color-active, 0.05),
+    0 6px 20px rgba($color-active-second, 0.1),
+    inset 0 3px 8px rgba($color-white, 0.25);
 
   /* glow як у макеті */
   &:hover {

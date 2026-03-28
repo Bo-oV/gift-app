@@ -5,11 +5,12 @@ import { Input } from "@/components/Input/Input";
 import { Button } from "@/components/Button/Button";
 import { useAuth } from "@/context/useAuth";
 import { updateUserProfile } from "@/firebase/firestore";
-import { useUserProfile } from "@/context/UserContext";
+
 import { LogOut, Pencil, Save, UserRound } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/auth";
 import { ConfirmModal } from "./components/ConfirmModal";
+import { useUserProfile } from "@/context/useUserProfile";
 
 const getPhotoKey = (uid: string) => `user_photo_${uid}`;
 
@@ -59,7 +60,9 @@ export const Profile = () => {
 
     setName(profile?.displayName || user.displayName || "");
     setPhoto(profile?.photoURL || savedPhoto || user.photoURL || null);
-  }, [user, profile]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const initialName = profile?.displayName || user?.displayName || "";
   const initialPhoto =

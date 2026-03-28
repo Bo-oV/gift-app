@@ -26,7 +26,7 @@ export const GoogleButton = ({ onClick, disabled }: Props) => {
   return (
     <button className="google-btn" onClick={handleClick} disabled={disabled}>
       <GoogleIcon />
-      <span>Продовжити з Google</span>
+      <span>Продовжити</span>
     </button>
   );
 };

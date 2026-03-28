@@ -27,23 +27,9 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route element={<Layout />}>
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/home" element={<Home />} />
 
-          <Route
-            path="/event/:eventId"
-            element={
-              <ProtectedRoute>
-                <EventPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/event/:eventId" element={<EventPage />} />
 
           <Route
             path="/create-event"
@@ -89,7 +75,7 @@ function App() {
           />
         </Route>
 
-        <Route path="*" element={<Navigate to={user ? "/home" : "/login"} />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
       <Toaster position="top-right" />
       <div className="background">

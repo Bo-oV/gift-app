@@ -1,0 +1,73 @@
+.login-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center; // ✅ центр по вертикалі
+  justify-content: center; // ✅ центр по горизонталі
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px); // 🔥 бонус
+  }
+
+  &__content {
+    position: relative;
+    width: 90%;
+    max-width: 360px;
+
+    background: $color-white;
+    border-radius: 20px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    z-index: 1; // щоб був над backdrop
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__body {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: $color-text-second;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  &__actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+  }
+}

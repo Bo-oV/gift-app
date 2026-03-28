@@ -1,29 +1,38 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddGiftModal } from "./components/AddGiftModal";
+import { LoginModal } from "./components/LoginModal";
+
 import type { Event } from "./types/event";
 import type { Gift } from "./types/gift";
+
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
 import { getEventById } from "./services/eventService";
 import { subscribeToGifts } from "./services/giftService";
 import { addVisitedEvent } from "./services/visitedEventsService";
 
-import { Button } from "@/components/Button/Button";
-
-import { Share2, Pencil, Plus, Gift as GiftIcon } from "lucide-react";
-
-import "../pages/event-page.scss";
-import { IconButton } from "@/components/Button/IconButton";
-import { GiftCard } from "./components/GiftCard";
 import {
   cancelReservation,
   deleteGift,
   reserveGift,
 } from "./services/reservationService";
+
+import { Button } from "@/components/Button/Button";
+import { IconButton } from "@/components/Button/IconButton";
+import { GiftCard } from "./components/GiftCard";
 import { AppLoader } from "./components/AppLoader";
 
+import { useShareContext } from "@/context/ShareContext";
+
+import { Pencil, Plus, Gift as GiftIcon, Link } from "lucide-react";
+
+import "../pages/event-page.scss";
+
+type PendingAction = { type: "reserve"; payload: string } | { type: "share" };
+
 export const EventPage = () => {
+  const { openShare } = useShareContext();
   const { eventId } = useParams();
   const navigation = useNavigate();
   const { user } = useAuth();
@@ -33,13 +42,34 @@ export const EventPage = () => {
   const [gifts, setGifts] = useState<Gift[]>([]);
   const [showAddGift, setShowAddGift] = useState(false);
 
-  // const userReservation = gifts.find((g) => g.reservedBy === user?.uid);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginTitle, setLoginTitle] = useState("");
 
-  const handleCopyLink = async () => {
-    if (!eventId) return;
-    const link = `${window.location.origin}/event/${eventId}`;
-    await navigator.clipboard.writeText(link);
-    toast.success("Посилання скопійовано!");
+  const [pendingAction, setPendingAction] = useState<PendingAction | null>(
+    null,
+  );
+
+  const openLoginModal = (title: string) => {
+    setLoginTitle(title);
+    setShowLogin(true);
+  };
+
+  const handleLoginSuccess = async () => {
+    setShowLogin(false);
+
+    if (!pendingAction || !eventId || !user) return;
+
+    if (pendingAction.type === "reserve") {
+      reserveGift(eventId, pendingAction.payload, user.uid)
+        .then(() => toast.success("Заброньовано"))
+        .catch(() => toast.error("Помилка"));
+    }
+
+    if (pendingAction.type === "share") {
+      openShare(eventId);
+    }
+
+    setPendingAction(null);
   };
 
   const handleEdit = () => {
@@ -81,6 +111,7 @@ export const EventPage = () => {
   );
 
   const total = gifts.length;
+
   if (loading || !event) return <AppLoader />;
 
   return (
@@ -88,7 +119,16 @@ export const EventPage = () => {
       {/* HEADER */}
       <div className="event-page__header">
         <div className="event-page__header-top">
-          <h1 className="event-page__title">{event.title}</h1>
+          <div className="event-page__title-block">
+            <h1 className="event-page__title">{event.title}</h1>
+
+            {event.ownerId !== user?.uid && (
+              <p className="event-page__owner">
+                {event.ownerName || "Організатор"}
+              </p>
+            )}
+          </div>
+
           <div className="event-page__meta">
             <span>{event.date.toDate().toLocaleDateString()}</span>
 
@@ -96,14 +136,24 @@ export const EventPage = () => {
               {reserved} / {total} <GiftIcon size={14} />
             </span>
           </div>
+
           <div className="event-page__actions">
             <IconButton
-              icon={<Share2 size={18} />}
-              ariaLabel="share"
-              onClick={(e: React.MouseEvent) => {
+              icon={<Link size={18} />}
+              onClick={(e) => {
                 e.stopPropagation();
-                handleCopyLink();
+
+                if (!user) {
+                  setPendingAction({ type: "share" });
+                  openLoginModal(`Поділись подією 🎉`);
+                  return;
+                }
+
+                if (!eventId) return;
+
+                openShare(eventId);
               }}
+              ariaLabel="Share"
             />
 
             {event.ownerId === user?.uid && (
@@ -128,11 +178,21 @@ export const EventPage = () => {
             link={gift.purchaseUrl}
             reservedBy={gift.reservedBy}
             currentUserId={user?.uid}
-            ownerId={event.ownerId}
+            ownerId={event.ownerId || ""}
             onReserve={() => {
-              if (!user) return;
+              if (!user) {
+                setPendingAction({
+                  type: "reserve",
+                  payload: gift.id,
+                });
 
-              reserveGift(eventId!, gift.id, user.uid)
+                openLoginModal("Майже готово 🎁");
+                return;
+              }
+
+              if (!eventId) return;
+
+              reserveGift(eventId, gift.id, user.uid)
                 .then(() => toast.success("Заброньовано"))
                 .catch(() => toast.error("Помилка"));
             }}
@@ -150,7 +210,7 @@ export const EventPage = () => {
         ))}
       </div>
 
-      {/* MODAL */}
+      {/* ADD GIFT */}
       {showAddGift && eventId && (
         <AddGiftModal
           eventId={eventId}
@@ -160,7 +220,7 @@ export const EventPage = () => {
       )}
 
       {/* FLOAT BUTTON */}
-      {event.ownerId === user?.uid && (
+      {(event.ownerId === user?.uid || event.ownerId === null) && (
         <div className="event-page__add">
           <Button
             text="Додати"
@@ -169,6 +229,15 @@ export const EventPage = () => {
             onClick={() => setShowAddGift(true)}
           />
         </div>
+      )}
+
+      {/* LOGIN MODAL */}
+      {showLogin && (
+        <LoginModal
+          title={loginTitle}
+          onClose={() => setShowLogin(false)}
+          onSuccess={handleLoginSuccess}
+        />
       )}
     </div>
   );

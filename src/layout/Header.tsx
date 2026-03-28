@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
-import { useUserProfile } from "@/context/UserContext";
 
 import "./header.scss";
+import { useUserProfile } from "@/context/useUserProfile";
 
 export const Header = () => {
   const { user } = useAuth();

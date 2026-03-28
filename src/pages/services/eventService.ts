@@ -1,17 +1,47 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/firestore";
 import type { Event } from "../types/event";
 
 export const getEventById = async (eventId: string): Promise<Event | null> => {
-  const eventRef = doc(db, "events", eventId);
-  const snap = await getDoc(eventRef);
+  const docRef = doc(db, "events", eventId);
+  const docSnap = await getDoc(docRef);
 
-  if (!snap.exists()) return null;
+  if (!docSnap.exists()) return null;
 
-  const data = snap.data() as Omit<Event, "id">;
+  const raw = docSnap.data();
 
-  return {
-    id: snap.id,
-    ...data,
+  const event: Event = {
+    id: docSnap.id,
+    title: raw.title,
+    date: raw.date,
+    createdAt: raw.createdAt ?? Timestamp.now(),
+    ownerId: raw.ownerId ?? "",
+    ownerName: raw.ownerName ?? undefined,
   };
+
+  // МІГРАЦІЯ ownerName
+  if (!event.ownerName && event.ownerId) {
+    try {
+      await updateDoc(docRef, {
+        ownerName: "User",
+      });
+
+      event.ownerName = "User";
+    } catch (e) {
+      console.log("Migration error:", e);
+    }
+  }
+
+  // МІГРАЦІЯ createdAt (ВАЖЛИВО)
+  if (!raw.createdAt) {
+    try {
+      await updateDoc(docRef, {
+        createdAt: Timestamp.now(),
+      });
+    } catch (e) {
+      console.log("createdAt migration error:", e);
+    }
+  }
+
+  return event;
 };

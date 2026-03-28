@@ -4,15 +4,19 @@ import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider.tsx";
-import { UserProvider } from "./context/UserContext.tsx";
+
+import { ShareProvider } from "./context/ShareProvider.tsx";
+import { UserProvider } from "./context/UserProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <UserProvider>
-          <App />
-        </UserProvider>
+        <ShareProvider>
+          <UserProvider>
+            <App />
+          </UserProvider>
+        </ShareProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>,

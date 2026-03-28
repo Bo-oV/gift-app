@@ -9,6 +9,7 @@ import {
   onSnapshot,
   collection,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import toast from "react-hot-toast";
@@ -35,15 +36,30 @@ export const MyReservations = () => {
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const map = new Map();
 
+      const eventCache = new Map();
+
       for (const docSnap of snapshot.docs) {
         const giftData = docSnap.data();
         const eventId = docSnap.ref.parent.parent?.id as string;
 
         if (!map.has(eventId)) {
+          let eventData;
+
+          if (eventCache.has(eventId)) {
+            eventData = eventCache.get(eventId);
+          } else {
+            const eventRef = doc(db, "events", eventId);
+            const eventSnap = await getDoc(eventRef);
+            eventData = eventSnap.data();
+
+            eventCache.set(eventId, eventData);
+          }
+
           map.set(eventId, {
             eventId,
             eventTitle: giftData.eventTitle,
             eventDate: giftData.eventDate,
+            ownerName: eventData?.ownerName, // ✅ ТЕПЕР ПРАЦЮЄ
             gifts: [],
           });
         }
@@ -102,6 +118,7 @@ export const MyReservations = () => {
           <EventReservationCard
             eventId={event.eventId}
             key={event.eventId}
+            ownerName={event.ownerName}
             title={event.eventTitle}
             date={event.eventDate?.toDate().getTime()}
             reserved={reserved}

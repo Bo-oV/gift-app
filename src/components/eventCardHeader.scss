@@ -3,12 +3,21 @@
   flex-direction: column;
   gap: 6px;
   cursor: pointer;
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
   &__title {
     font-size: 16px;
     font-weight: 400;
     color: $color-text-main;
   }
-
+  &__owner {
+    font-size: 14px;
+    font-weight: 400;
+    color: $color-text-second;
+  }
   &__meta {
     display: flex;
     justify-content: space-between;

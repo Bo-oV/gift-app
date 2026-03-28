@@ -1,6 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import { Button } from "@/components/Button/Button";
 import { Pencil, Link } from "lucide-react";
 import { IconButton } from "@/components/Button/IconButton";
@@ -10,6 +9,7 @@ import { subscribeToGifts } from "../services/giftService";
 import type { Gift as Gifts } from "../types/gift";
 import { getColorClass } from "@/utils/getColorClass";
 import { EventCardHeader } from "@/components/EventCardHeader";
+import { useShareContext } from "@/context/ShareContext";
 
 type Props = {
   id: string;
@@ -19,13 +19,17 @@ type Props = {
 };
 
 export const EventCard = ({ id, title, date, eventId }: Props) => {
+  const { openShare } = useShareContext();
   const [total, setTotal] = useState(0);
   const [reserved, setReserved] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = subscribeToGifts(id, (gifts: Gifts[]) => {
+      setLoaded(true);
+
       const totalGifts = gifts.length;
       const reservedGifts = gifts.filter((gift) => gift.reservedBy).length;
 
@@ -35,13 +39,6 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
 
     return () => unsubscribe();
   }, [id]);
-  const handleCopyLink = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    const link = `${window.location.origin}/event/${id}`;
-    await navigator.clipboard.writeText(link);
-    toast.success("Link copied!");
-  };
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -60,14 +57,17 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
       <EventCardHeader
         title={title}
         date={date.toDate().toLocaleDateString()}
-        reserved={reserved}
-        total={total}
+        reserved={loaded ? reserved : undefined}
+        total={loaded ? total : undefined}
       />
 
       <div className="event-card__actions">
         <IconButton
           icon={<Link size={16} />}
-          onClick={handleCopyLink}
+          onClick={(e) => {
+            e.stopPropagation();
+            openShare(id);
+          }}
           ariaLabel="Copy link"
         />
 

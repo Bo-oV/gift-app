@@ -6,4 +6,5 @@ export type Event = {
   date: Timestamp;
   ownerId: string;
   createdAt: Timestamp;
+  ownerName?: string;
 };
