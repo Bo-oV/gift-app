@@ -19,7 +19,7 @@ export default defineConfig({
         id: "/giftly",
         name: "Giftly",
         short_name: "Giftly",
-        start_url: "/?source=pwa",
+        start_url: "/giftly",
         scope: "/",
         display: "standalone",
         background_color: "#ffffff",
