@@ -19,16 +19,13 @@ type Props = {
 
 export const EventCard = ({ id, title, date, eventId }: Props) => {
   const { openShare } = useShareContext();
-  const [total, setTotal] = useState(0);
-  const [reserved, setReserved] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const [total, setTotal] = useState<number | null>(null);
+  const [reserved, setReserved] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = subscribeToGifts(id, (gifts: Gifts[]) => {
-      setLoaded(true);
-
       const totalGifts = gifts.length;
       const reservedGifts = gifts.filter((gift) => gift.reservedBy).length;
 
@@ -56,8 +53,8 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
       <EventCardHeader
         title={title}
         date={date.toDate().toLocaleDateString()}
-        reserved={loaded ? reserved : undefined}
-        total={loaded ? total : undefined}
+        reserved={reserved}
+        total={total}
       />
 
       <div className="event-card__actions">

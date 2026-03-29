@@ -38,6 +38,7 @@
 
 .modal {
   display: flex;
+  position: relative;
   flex-direction: column;
   width: 98%;
   max-width: 420px;
@@ -54,4 +55,27 @@
     color: $color-text-second;
     justify-content: flex-end;
   }
+}
+
+.modal-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px);
+
+  pointer-events: all;
+}
+
+.preview-error {
+  font-size: 14px;
+  color: $color-active;
+  margin-top: 8px;
 }

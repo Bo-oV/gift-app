@@ -4,8 +4,8 @@ type Props = {
   ownerName?: string;
   title: string;
   date?: string;
-  reserved?: number;
-  total?: number;
+  reserved: number | null;
+  total: number | null;
   onClick?: () => void;
 };
 
@@ -33,7 +33,7 @@ export const EventCardHeader = ({
       <div className="event-card-header__meta">
         {date && <span className="event-card-header__date">{date}</span>}
         <span className="event-card-header__count">
-          {total === undefined ? "..." : `${reserved}/${total}`}{" "}
+          {total === null ? "..." : `${reserved}/${total}`}
           <Gift size={14} />
         </span>
       </div>

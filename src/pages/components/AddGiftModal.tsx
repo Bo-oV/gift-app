@@ -23,21 +23,32 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
   const [purchaseUrl, setPurchaseUrl] = useState<string>("");
   const [preview, setPreview] = useState<any>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
+  const [previewError, setPreviewError] = useState(false);
 
   const fetchPreview = async (url: string) => {
-    const res = await fetch(`https://api.microlink.io?url=${url}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`https://api.microlink.io?url=${url}`);
+      const data = await res.json();
 
-    const preview = data.data;
+      const preview = data.data;
 
-    const title = preview.title || "";
+      if (!preview || !preview.title) {
+        throw new Error("No preview data");
+      }
 
-    const description = preview.description || preview.text || title;
-    return {
-      title,
-      description,
-      image: preview.image?.url,
-    };
+      const title = preview.title || "";
+      const description = preview.description || preview.text || title;
+
+      return {
+        title,
+        description,
+        image: preview.image?.url,
+      };
+    } catch (e) {
+      console.log(e);
+      setPreviewError(true);
+      return null;
+    }
   };
 
   const isValidUrl = (value: string) => {
@@ -57,9 +68,11 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
 
     const timeout = setTimeout(() => {
       setLoadingPreview(true);
-
+      setPreviewError(false);
       fetchPreview(purchaseUrl)
         .then((data) => {
+          if (!data) return;
+
           setPreview(data);
 
           setTitle((prev) => (prev ? prev : data.title));
@@ -111,6 +124,17 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
         <X size={18} />
       </button>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
+        {loadingPreview && (
+          <div className="modal-loader">
+            <InlineLoader />
+            <span>Заповнюємо поля...</span>
+          </div>
+        )}
+        {previewError && (
+          <p className="preview-error">
+            😿 Нажаль не вдалося отримати дані. Введіть їх вручну
+          </p>
+        )}
         <InputWithAction
           icon={<Link size={18} />}
           label="Посилання на подарунок"
@@ -120,12 +144,7 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
           onChange={setPurchaseUrl}
           error={!isUrlValid}
         />
-        {loadingPreview && (
-          <div className="preview-loading">
-            <InlineLoader />
-            <span>Заповнюємо поля ....</span>
-          </div>
-        )}
+
         <Input
           label="Назва подарунка"
           placeholder="Або введи вручну"
