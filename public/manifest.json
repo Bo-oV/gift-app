@@ -1,10 +1,13 @@
 {
-  "name": "Gift Planner",
-  "short_name": "Gifts",
+  "id": "/",
+  "name": "Sviato — Gift & Event Planner",
+  "short_name": "Sviato",
+  "description": "Plan events, organize gift ideas, and celebrate together with friends",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#6a5cff",
   "icons": [
     {
       "src": "/icon-192.png",
