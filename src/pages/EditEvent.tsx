@@ -1,12 +1,4 @@
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  Timestamp,
-  collection,
-  getDocs,
-  deleteDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { EventForm } from "./components/EventForm";
@@ -19,33 +11,6 @@ export const EditEvent = () => {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const handleDeleteEvent = async () => {
-    if (!eventId) return;
-
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this event?",
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      const giftsRef = collection(db, "events", eventId, "gifts");
-      const giftsSnapshot = await getDocs(giftsRef);
-
-      const deletePromises = giftsSnapshot.docs.map((docSnap) =>
-        deleteDoc(docSnap.ref),
-      );
-
-      await Promise.all(deletePromises);
-
-      await deleteDoc(doc(db, "events", eventId));
-
-      navigate("/home");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     const loadEvent = async () => {
@@ -89,7 +54,6 @@ export const EditEvent = () => {
       initialTitle={title}
       initialDate={date}
       onSubmit={handleUpdate}
-      onDelete={handleDeleteEvent}
     />
   );
 };

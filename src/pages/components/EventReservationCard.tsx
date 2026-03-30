@@ -45,7 +45,6 @@ export const EventReservationCard = ({
           date={formattedDate}
           reserved={reserved}
           total={total}
-          onClick={onOpen}
         />
 
         {/* <div className="reservation-card__right">

@@ -1,4 +1,12 @@
-import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  Timestamp,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase/firestore";
 import type { Event } from "../types/event";
 
@@ -44,4 +52,19 @@ export const getEventById = async (eventId: string): Promise<Event | null> => {
   }
 
   return event;
+};
+
+export const deleteEventWithGifts = async (eventId: string) => {
+  // видаляємо всі подарунки
+  const giftsRef = collection(db, "events", eventId, "gifts");
+  const giftsSnapshot = await getDocs(giftsRef);
+
+  const deletePromises = giftsSnapshot.docs.map((docSnap) =>
+    deleteDoc(docSnap.ref),
+  );
+
+  await Promise.all(deletePromises);
+
+  // видаляємо саму подію
+  await deleteDoc(doc(db, "events", eventId));
 };

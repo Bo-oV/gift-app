@@ -8,7 +8,7 @@ import type { Gift } from "./types/gift";
 
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
-import { getEventById } from "./services/eventService";
+import { deleteEventWithGifts, getEventById } from "./services/eventService";
 import { subscribeToGifts } from "./services/giftService";
 import { addVisitedEvent } from "./services/visitedEventsService";
 
@@ -24,18 +24,26 @@ import { AppLoader } from "./components/AppLoader";
 
 import { useShareContext } from "@/context/ShareContext";
 
-import { Pencil, Plus, Gift as GiftIcon, Link } from "lucide-react";
+import { Plus, Gift as GiftIcon, Link } from "lucide-react";
 
 import "../pages/event-page.scss";
+import { IconButton } from "@/components/Button/IconButton";
+import { MoreVertical } from "lucide-react";
+import { EventActionsSheet } from "./components/EventActionsSheet";
+import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
+import { ConfirmModal } from "./components/ConfirmModal";
+import { Calendar } from "lucide-react";
 
 type PendingAction = { type: "reserve"; payload: string } | { type: "share" };
 
 export const EventPage = () => {
+  const navigate = useNavigate();
   const { openShare } = useShareContext();
   const { eventId } = useParams();
   const navigation = useNavigate();
   const { user } = useAuth();
-
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showActions, setShowActions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState<Event | null>(null);
   const [gifts, setGifts] = useState<Gift[]>([]);
@@ -47,6 +55,17 @@ export const EventPage = () => {
   const [pendingAction, setPendingAction] = useState<PendingAction | null>(
     null,
   );
+
+  const handleDeleteEvent = async () => {
+    if (!eventId) return;
+
+    try {
+      await deleteEventWithGifts(eventId);
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const openLoginModal = (title: string) => {
     setLoginTitle(title);
@@ -155,36 +174,68 @@ export const EventPage = () => {
                 openShare(eventId);
               }}
             />
-            {/* <IconButton
-              icon={<Link size={18} />}
-              onClick={(e) => {
-                e.stopPropagation();
+            {event.ownerId !== user?.uid && (
+              <Button
+                text="Додати нагадування"
+                variant="secondary"
+                icon={<Calendar size={18} />}
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                if (!user) {
-                  setPendingAction({ type: "share" });
-                  openLoginModal(`Поділись подією 🎉`);
-                  return;
-                }
-
-                if (!eventId) return;
-
-                openShare(eventId);
-              }}
-              ariaLabel="Share"
-            /> */}
+                  window.open(
+                    createGoogleCalendarLink({
+                      title: event.title,
+                      date: event.date,
+                    }),
+                  );
+                }}
+              />
+            )}
 
             {event.ownerId === user?.uid && (
-              <Button
-                text="Редагувати"
-                icon={<Pencil size={16} />}
-                variant="secondary"
-                onClick={handleEdit}
+              <IconButton
+                icon={<MoreVertical size={18} />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowActions(true);
+                }}
+                ariaLabel="Actions"
               />
             )}
           </div>
         </div>
       </div>
-
+      {/* SETTINGS */}
+      <EventActionsSheet
+        open={showActions}
+        onClose={() => setShowActions(false)}
+        onEdit={handleEdit}
+        onAddToCalendar={() => {
+          window.open(
+            createGoogleCalendarLink({
+              title: event.title,
+              date: event.date,
+            }),
+          );
+        }}
+        onDelete={() => {
+          setShowActions(false);
+          setShowDeleteConfirm(true);
+        }}
+        isOwner={true}
+      />
+      {showDeleteConfirm && (
+        <ConfirmModal
+          title="Видалити подію?"
+          text="Цю дію неможливо скасувати"
+          confirmText="Видалити"
+          onCancel={() => setShowDeleteConfirm(false)}
+          onConfirm={async () => {
+            setShowDeleteConfirm(false);
+            await handleDeleteEvent();
+          }}
+        />
+      )}
       {/* GIFTS */}
       <div className="gift-list">
         {gifts.map((gift) => (

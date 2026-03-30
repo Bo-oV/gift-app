@@ -1,12 +1,15 @@
 import { Gift } from "lucide-react";
 import "../components/eventCardHeader.scss";
+import { IconButton } from "./Button/IconButton";
+import { MoreVertical } from "lucide-react";
+
 type Props = {
   ownerName?: string;
   title: string;
   date?: string;
   reserved: number | null;
   total: number | null;
-  onClick?: () => void;
+  onActionsClick?: (e: React.MouseEvent) => void;
 };
 
 export const EventCardHeader = ({
@@ -15,23 +18,32 @@ export const EventCardHeader = ({
   date,
   reserved,
   total,
-  onClick,
+  onActionsClick,
 }: Props) => {
-  console.log(ownerName);
   return (
-    <div
-      className="event-card-header"
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-    >
+    <div className="event-card-header">
       <div className="event-card-header__top">
-        <h3 className="event-card-header__title">{title}</h3>
+        <div className="event-card-header__title-block">
+          <h3 className="event-card-header__title">{title}</h3>
 
-        {ownerName && <p className="event-card-header__owner">{ownerName}</p>}
+          {ownerName && <p className="event-card-header__owner">{ownerName}</p>}
+        </div>
+
+        {onActionsClick && (
+          <IconButton
+            icon={<MoreVertical size={18} />}
+            onClick={(e) => {
+              e.stopPropagation();
+              onActionsClick(e);
+            }}
+            ariaLabel="Actions"
+          />
+        )}
       </div>
+
       <div className="event-card-header__meta">
         {date && <span className="event-card-header__date">{date}</span>}
+
         <span className="event-card-header__count">
           {total === null ? "..." : `${reserved}/${total}`}
           <Gift size={14} />

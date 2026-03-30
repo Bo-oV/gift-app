@@ -1,7 +1,7 @@
 import type { Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/Button/Button";
-import { Pencil, Link } from "lucide-react";
+import { Link } from "lucide-react";
 import "../components/eventCard.scss";
 import { useEffect, useState } from "react";
 import { subscribeToGifts } from "../services/giftService";
@@ -9,6 +9,10 @@ import type { Gift as Gifts } from "../types/gift";
 import { getColorClass } from "@/utils/getColorClass";
 import { EventCardHeader } from "@/components/EventCardHeader";
 import { useShareContext } from "@/context/ShareContext";
+import { IconButton } from "@/components/Button/IconButton";
+import { MoreVertical } from "lucide-react";
+import { EventActionsSheet } from "./EventActionsSheet";
+import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
 
 type Props = {
   id: string;
@@ -21,7 +25,7 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
   const { openShare } = useShareContext();
   const [total, setTotal] = useState<number | null>(null);
   const [reserved, setReserved] = useState<number | null>(null);
-
+  const [showActions, setShowActions] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,8 +40,7 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
     return () => unsubscribe();
   }, [id]);
 
-  const handleEdit = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleEdit = () => {
     navigate(`/edit-event/${id}`);
   };
 
@@ -76,13 +79,32 @@ export const EventCard = ({ id, title, date, eventId }: Props) => {
           ariaLabel="Copy link"
         /> */}
 
-        <Button
-          onClick={handleEdit}
-          text="Редагувати"
-          icon={<Pencil size={20} />}
-          variant="secondary"
+        <IconButton
+          icon={<MoreVertical size={16} />}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowActions(true);
+          }}
+          ariaLabel="Actions"
         />
       </div>
+      <EventActionsSheet
+        open={showActions}
+        onClose={() => setShowActions(false)}
+        onEdit={handleEdit}
+        onAddToCalendar={() => {
+          window.open(
+            createGoogleCalendarLink({
+              title,
+              date,
+            }),
+          );
+        }}
+        onDelete={() => {
+          console.log("delete", id);
+        }}
+        isOwner={true}
+      />
     </div>
   );
 };
