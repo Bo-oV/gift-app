@@ -70,14 +70,6 @@ export const EventCard = ({
             onShare();
           }}
         />
-        {/* <IconButton
-          icon={<Link size={16} />}
-          onClick={(e) => {
-            e.stopPropagation();
-            openShare(id);
-          }}
-          ariaLabel="Copy link"
-        /> */}
 
         <IconButton
           icon={<MoreVertical size={16} />}

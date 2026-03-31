@@ -3,6 +3,7 @@ import "../components/shareModal.scss";
 import { QRCodeCanvas } from "qrcode.react";
 import { IconButton } from "@/components/Button/IconButton";
 import { Link } from "lucide-react";
+import toast from "react-hot-toast";
 type Props = {
   link: string;
   onClose: () => void;
@@ -13,7 +14,12 @@ type Props = {
 
 export const ShareModal = ({ link, onClose, mode }: Props) => {
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(link);
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success("Посилання скопійовано 🔗");
+    } catch {
+      toast.error("Не вдалося скопіювати");
+    }
   };
 
   const handleDownload = () => {

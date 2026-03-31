@@ -11,7 +11,7 @@ import { db } from "../firebase/firestore";
 import { EventCard } from "./components/EventCard";
 import "../pages/home.scss";
 import { AppLoader } from "./components/AppLoader";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { EventActionsSheet } from "./components/EventActionsSheet";
 import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";

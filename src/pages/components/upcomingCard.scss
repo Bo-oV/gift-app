@@ -58,3 +58,8 @@
     }
   }
 }
+
+.upcoming-card--disabled {
+  opacity: 0.5;
+  pointer-events: auto;
+}

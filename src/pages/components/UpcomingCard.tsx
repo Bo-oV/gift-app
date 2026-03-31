@@ -8,6 +8,8 @@ type Props = {
   reserved: number;
   total: number;
   onClick?: () => void;
+  onShare?: () => void;
+  isDisabled?: boolean;
 };
 
 export const UpcomingCard = ({
@@ -16,9 +18,17 @@ export const UpcomingCard = ({
   reserved,
   total,
   onClick,
+  onShare,
+  isDisabled,
 }: Props) => {
   return (
-    <div className="upcoming-card" onClick={onClick}>
+    <div
+      className={`upcoming-card ${isDisabled ? "upcoming-card--disabled" : ""}`}
+      onClick={() => {
+        if (isDisabled) return; // ❌ блокуємо
+        onClick?.();
+      }}
+    >
       <div className="upcoming-card__content">
         {/* LEFT */}
         <div className="upcoming-card__left">
@@ -41,19 +51,13 @@ export const UpcomingCard = ({
           <Button
             variant="primary"
             icon={<Link size={16} />}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            disabled={isDisabled}
+            onClick={(e) => {
               e.stopPropagation();
-              onClick?.();
+              if (isDisabled) return;
+              onShare?.();
             }}
           />
-          {/* <IconButton
-            icon={<Link size={16} />}
-            ariaLabel="Open event"
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.stopPropagation();
-              onClick?.();
-            }}
-          /> */}
         </div>
       </div>
     </div>
