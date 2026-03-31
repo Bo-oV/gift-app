@@ -6,12 +6,16 @@ import { Link } from "lucide-react";
 type Props = {
   link: string;
   onClose: () => void;
+
+  // [ADDED]
+  mode: "qr" | "link" | "post";
 };
 
-export const ShareModal = ({ link, onClose }: Props) => {
+export const ShareModal = ({ link, onClose, mode }: Props) => {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(link);
   };
+
   const handleDownload = () => {
     const canvas = document.getElementById("qr-code") as HTMLCanvasElement;
     if (!canvas) return;
@@ -29,15 +33,22 @@ export const ShareModal = ({ link, onClose }: Props) => {
       <div className="confirm-modal__backdrop" onClick={onClose} />
 
       <div className="confirm-modal__content">
-        <h3 className="confirm-modal__title">Запроси друзів 🎉</h3>
+        {/* TITLE */}
+        <h3 className="confirm-modal__title">
+          {mode === "qr" && "QR код"}
+          {mode === "link" && "Посилання"}
+          {mode === "post" && "Пост для соц мереж"}
+        </h3>
 
-        {/* QR */}
-        <div className="confirm-modal__qr">
-          <QRCodeCanvas value={link} size={160} id="qr-code" />
-        </div>
+        {/* QR MODE */}
+        {mode === "qr" && (
+          <div className="confirm-modal__qr">
+            <QRCodeCanvas value={link} size={180} id="qr-code" />
+          </div>
+        )}
 
-        {/* LINK + COPY */}
-        <div className="confirm-modal__row">
+        {/* LINK MODE */}
+        {mode === "link" && (
           <div className="confirm-modal__row">
             <input className="confirm-modal__link" value={link} readOnly />
 
@@ -47,12 +58,24 @@ export const ShareModal = ({ link, onClose }: Props) => {
               ariaLabel="Copy link"
             />
           </div>
-        </div>
+        )}
 
+        {/* POST MODE (поки заглушка) */}
+        {mode === "post" && (
+          <div style={{ textAlign: "center" }}>
+            <p>Скоро буде 🔥</p>
+          </div>
+        )}
+
+        {/* ACTIONS */}
         <div className="confirm-modal__actions-row">
           <Button text="Закрити" variant="ghost" onClick={onClose} />
 
-          <Button text="Завантажити QR" onClick={handleDownload} />
+          {mode === "qr" && (
+            <Button text="Завантажити QR" onClick={handleDownload} />
+          )}
+
+          {mode === "link" && <Button text="Скопіювати" onClick={handleCopy} />}
         </div>
       </div>
     </div>

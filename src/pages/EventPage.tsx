@@ -22,8 +22,6 @@ import { Button } from "@/components/Button/Button";
 import { GiftCard } from "./components/GiftCard";
 import { AppLoader } from "./components/AppLoader";
 
-import { useShareContext } from "@/context/ShareContext";
-
 import { Plus, Gift as GiftIcon, Link } from "lucide-react";
 
 import "../pages/event-page.scss";
@@ -33,12 +31,20 @@ import { EventActionsSheet } from "./components/EventActionsSheet";
 import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { Calendar } from "lucide-react";
+import { ShareModal } from "./components/ShareModal";
 
 type PendingAction = { type: "reserve"; payload: string } | { type: "share" };
 
 export const EventPage = () => {
+  {
+    /* SHARE */
+  }
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareModal, setShareModal] = useState<null | "qr" | "link" | "post">(
+    null,
+  );
+
   const navigate = useNavigate();
-  const { openShare } = useShareContext();
   const { eventId } = useParams();
   const navigation = useNavigate();
   const { user } = useAuth();
@@ -81,10 +87,6 @@ export const EventPage = () => {
       reserveGift(eventId, pendingAction.payload, user.uid)
         .then(() => toast.success("Заброньовано"))
         .catch(() => toast.error("Помилка"));
-    }
-
-    if (pendingAction.type === "share") {
-      openShare(eventId);
     }
 
     setPendingAction(null);
@@ -131,7 +133,7 @@ export const EventPage = () => {
   const total = gifts.length;
 
   if (loading || !event) return <AppLoader />;
-
+  const eventLink = `${window.location.origin}/event/${eventId}`;
   return (
     <div className="event-page">
       {/* HEADER */}
@@ -169,11 +171,10 @@ export const EventPage = () => {
                   return;
                 }
 
-                if (!eventId) return;
-
-                openShare(eventId);
+                setShareOpen(true);
               }}
             />
+
             {event.ownerId !== user?.uid && (
               <Button
                 text="Додати нагадування"
@@ -224,6 +225,24 @@ export const EventPage = () => {
         }}
         isOwner={true}
       />
+
+      <EventActionsSheet
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        onGenerateQR={() => {
+          setShareOpen(false);
+          setShareModal("qr");
+        }}
+        onCopyLink={() => {
+          setShareOpen(false);
+          setShareModal("link");
+        }}
+        onSocialPost={() => {
+          setShareOpen(false);
+          setShareModal("post");
+        }}
+      />
+
       {showDeleteConfirm && (
         <ConfirmModal
           title="Видалити подію?"
@@ -306,6 +325,15 @@ export const EventPage = () => {
           title={loginTitle}
           onClose={() => setShowLogin(false)}
           onSuccess={handleLoginSuccess}
+        />
+      )}
+
+      {/* SHARE MODAL */}
+      {shareModal && (
+        <ShareModal
+          link={eventLink}
+          mode={shareModal}
+          onClose={() => setShareModal(null)}
         />
       )}
     </div>

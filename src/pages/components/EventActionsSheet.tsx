@@ -1,13 +1,22 @@
-import { Pencil, Calendar, Trash2 } from "lucide-react";
+import { QrCode } from "lucide-react";
 import "./eventActionsSheet.scss";
+import { Files } from "lucide-react";
+import { FileImage } from "lucide-react";
+import { Pencil } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
+import { Trash } from "lucide-react";
 
 type Props = {
   open: boolean;
   onClose: () => void;
   onEdit?: () => void;
-  onAddToCalendar: () => void;
+  onAddToCalendar?: () => void;
   onDelete?: () => void;
   isOwner?: boolean;
+
+  onGenerateQR?: () => void;
+  onCopyLink?: () => void;
+  onSocialPost?: () => void;
 };
 
 export const EventActionsSheet = ({
@@ -17,57 +26,102 @@ export const EventActionsSheet = ({
   onAddToCalendar,
   onDelete,
   isOwner,
+  onGenerateQR,
+  onCopyLink,
+  onSocialPost,
 }: Props) => {
   if (!open) return null;
 
+  // [ADDED]
+  const isShareMode = onGenerateQR || onCopyLink || onSocialPost;
+
   return (
     <div className="actions-sheet">
-      {/* backdrop */}
       <div className="actions-sheet__backdrop" onClick={onClose} />
 
-      {/* content */}
       <div className="actions-sheet__content">
-        {/* drag indicator */}
         <div className="actions-sheet__handle" />
 
-        {/* EDIT (тільки для owner) */}
-        {isOwner && onEdit && (
-          <button
-            className="actions-sheet__item"
-            onClick={() => {
-              onEdit();
-              onClose();
-            }}
-          >
-            <Pencil size={18} />
-            <span>Редагувати</span>
-          </button>
+        {/* [ADDED] SHARE ACTIONS */}
+        {isShareMode && (
+          <>
+            <button
+              className="actions-sheet__item"
+              onClick={() => {
+                onGenerateQR?.();
+                onClose();
+              }}
+            >
+              <QrCode size={16} />
+              <span>Згенерувати QR</span>
+            </button>
+
+            <button
+              className="actions-sheet__item"
+              onClick={() => {
+                onCopyLink?.();
+                onClose();
+              }}
+            >
+              <Files size={16} />
+              <span>Скопіювати посилання</span>
+            </button>
+
+            <button
+              className="actions-sheet__item"
+              onClick={() => {
+                onSocialPost?.();
+                onClose();
+              }}
+            >
+              <FileImage size={16} />
+              <span>Пост для соц мереж</span>
+            </button>
+          </>
         )}
 
-        {/* CALENDAR */}
-        <button
-          className="actions-sheet__item"
-          onClick={() => {
-            onAddToCalendar();
-            onClose();
-          }}
-        >
-          <Calendar size={18} />
-          <span>Додати в календар</span>
-        </button>
+        {/* CHANGE*/}
+        {!isShareMode && (
+          <>
+            {isOwner && onEdit && (
+              <button
+                className="actions-sheet__item"
+                onClick={() => {
+                  onEdit();
+                  onClose();
+                }}
+              >
+                <Pencil size={16} />
+                <span>Редагувати</span>
+              </button>
+            )}
 
-        {/* DELETE (тільки для owner) */}
-        {isOwner && onDelete && (
-          <button
-            className="actions-sheet__item actions-sheet__item--danger"
-            onClick={() => {
-              onDelete();
-              onClose();
-            }}
-          >
-            <Trash2 size={18} />
-            <span>Видалити подію</span>
-          </button>
+            {onAddToCalendar && (
+              <button
+                className="actions-sheet__item"
+                onClick={() => {
+                  onAddToCalendar();
+                  onClose();
+                }}
+              >
+                <CalendarCheck size={16} />
+                <span>Додати в календар</span>
+              </button>
+            )}
+
+            {isOwner && onDelete && (
+              <button
+                className="actions-sheet__item actions-sheet__item--danger"
+                onClick={() => {
+                  onDelete();
+                  onClose();
+                }}
+              >
+                <Trash size={16} />
+                <span>Видалити подію</span>
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

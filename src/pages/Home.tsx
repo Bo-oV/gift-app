@@ -11,8 +11,13 @@ import { db } from "../firebase/firestore";
 import { EventCard } from "./components/EventCard";
 import "../pages/home.scss";
 import { AppLoader } from "./components/AppLoader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Plus } from "lucide-react";
+import { EventActionsSheet } from "./components/EventActionsSheet";
+import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
+import { ShareModal } from "./components/ShareModal";
+import { ConfirmModal } from "./components/ConfirmModal";
+import { deleteEventWithGifts } from "./services/eventService";
 
 type EventType = {
   id: string;
@@ -23,10 +28,23 @@ type EventType = {
 
 export const Home = () => {
   const navigate = useNavigate();
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareModal, setShareModal] = useState<null | "qr" | "link" | "post">(
+    null,
+  );
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const [activeEventId, setActiveEventId] = useState<string | null>(null);
   const { user, loading: authLoading } = useAuth();
 
   const [events, setEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleShare = () => {
+    setActiveEventId(null);
+    setShareOpen(true);
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -49,10 +67,13 @@ export const Home = () => {
     loadEvents();
   }, [user]);
 
+  const activeEvent = events.find((e) => e.id === activeEventId);
+
   if (loading) {
     return <AppLoader />;
   }
 
+  const eventLink = `${window.location.origin}/event/${activeEventId}`;
   return (
     <div className="home">
       {events.length === 0 ? (
@@ -84,8 +105,74 @@ export const Home = () => {
             title={event.title}
             date={event.date}
             eventId={event.id}
+            onOpenActions={() => setActiveEventId(event.id)}
+            onShare={() => handleShare()}
           />
         ))
+      )}
+      <EventActionsSheet
+        open={!!activeEventId}
+        onClose={() => setActiveEventId(null)}
+        onEdit={() => navigate(`/edit-event/${activeEventId}`)}
+        onAddToCalendar={() => {
+          if (!activeEvent) return;
+
+          window.open(
+            createGoogleCalendarLink({
+              title: activeEvent.title,
+              date: activeEvent.date,
+            }),
+          );
+        }}
+        onDelete={() => {
+          setActiveEventId(null);
+          setShowDeleteConfirm(true);
+        }}
+        isOwner={true}
+      />
+
+      <EventActionsSheet
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        onGenerateQR={() => {
+          setShareOpen(false);
+          setShareModal("qr");
+        }}
+        onCopyLink={() => {
+          setShareOpen(false);
+          setShareModal("link");
+        }}
+        onSocialPost={() => {
+          setShareOpen(false);
+          setShareModal("post");
+        }}
+      />
+
+      {/* SHARE MODAL */}
+      {shareModal && (
+        <ShareModal
+          link={eventLink}
+          mode={shareModal}
+          onClose={() => setShareModal(null)}
+        />
+      )}
+
+      {showDeleteConfirm && (
+        <ConfirmModal
+          title="Видалити подію?"
+          text="Цю дію неможливо скасувати"
+          confirmText="Видалити"
+          onCancel={() => setShowDeleteConfirm(false)}
+          onConfirm={async () => {
+            if (!activeEventId) return;
+
+            setShowDeleteConfirm(false);
+
+            await deleteEventWithGifts(activeEventId);
+
+            setEvents((prev) => prev.filter((e) => e.id !== activeEventId));
+          }}
+        />
       )}
     </div>
   );
