@@ -10,6 +10,7 @@ import { db } from "@/firebase/firestore";
 import "../pages/upcoming.scss";
 import { EventActionsSheet } from "./components/EventActionsSheet";
 import { ShareModal } from "./components/ShareModal";
+import { AppLoader } from "./components/AppLoader";
 
 type EventWithStats = VisitedEvent & {
   total: number;
@@ -18,9 +19,13 @@ type EventWithStats = VisitedEvent & {
 
 export const Upcoming = () => {
   const navigate = useNavigate();
-  const events: VisitedEvent[] = getVisitedEvents();
 
+  const [events] = useState<VisitedEvent[]>(() => {
+    return getVisitedEvents();
+  });
   const [eventsWithStats, setEventsWithStats] = useState<EventWithStats[]>([]);
+  const [loading] = useState(false);
+
   const [invalidEvent, setInvalidEvent] = useState<string | null>(null);
 
   const [shareOpen, setShareOpen] = useState(false);
@@ -30,35 +35,35 @@ export const Upcoming = () => {
   const [activeEventId, setActiveEventId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!events.length) return;
+
     const load = async () => {
-      const result: EventWithStats[] = [];
+      try {
+        const result = await Promise.all(
+          events.map(async (event) => {
+            const giftsRef = collection(db, "events", event.eventId, "gifts");
+            const snapshot = await getDocs(giftsRef);
 
-      for (const event of events) {
-        const giftsRef = collection(db, "events", event.eventId, "gifts");
-        const snapshot = await getDocs(giftsRef);
+            const gifts = snapshot.docs.map((doc) => doc.data());
 
-        const gifts = snapshot.docs.map((doc) => doc.data());
+            return {
+              ...event,
+              total: gifts.length,
+              reserved: gifts.filter((g) => g.reservedBy).length,
+            };
+          }),
+        );
 
-        const total = gifts.length;
-        const reserved = gifts.filter((g) => g.reservedBy).length;
-
-        result.push({
-          ...event,
-          total,
-          reserved,
-        });
+        setEventsWithStats(result);
+      } catch (e) {
+        console.error(e);
       }
-
-      setEventsWithStats(result);
     };
 
     load();
   }, [events]);
 
-  // перевірка чи подія минула
-  const isPastEvent = (date: number) => {
-    return new Date(date) < new Date();
-  };
+  const isPastEvent = (date: number) => new Date(date) < new Date();
 
   const handleOpenEvent = async (eventId: string, isDisabled: boolean) => {
     if (isDisabled) {
@@ -66,14 +71,18 @@ export const Upcoming = () => {
       return;
     }
 
-    const event = await getEventById(eventId);
+    try {
+      const event = await getEventById(eventId);
 
-    if (!event) {
-      setInvalidEvent(eventId);
-      return;
+      if (!event) {
+        setInvalidEvent(eventId);
+        return;
+      }
+
+      navigate(`/event/${eventId}`);
+    } catch (e) {
+      console.error(e);
     }
-
-    navigate(`/event/${eventId}`);
   };
 
   const handleShare = (eventId: string, isDisabled: boolean) => {
@@ -87,6 +96,11 @@ export const Upcoming = () => {
   };
 
   const eventLink = `${window.location.origin}/event/${activeEventId}`;
+
+  // loading state
+  if (loading) {
+    return <AppLoader />;
+  }
 
   return (
     <div className="upcoming">
@@ -105,7 +119,7 @@ export const Upcoming = () => {
               date={event.date}
               reserved={event.reserved}
               total={event.total}
-              isDisabled={disabled} // 🔥 ключове
+              isDisabled={disabled}
               onClick={() => handleOpenEvent(event.eventId, disabled)}
               onShare={() => handleShare(event.eventId, disabled)}
             />
@@ -113,7 +127,6 @@ export const Upcoming = () => {
         })
       )}
 
-      {/* SHARE SHEET */}
       <EventActionsSheet
         open={shareOpen}
         onClose={() => setShareOpen(false)}
@@ -131,7 +144,6 @@ export const Upcoming = () => {
         }}
       />
 
-      {/* SHARE MODAL */}
       {shareModal && (
         <ShareModal
           link={eventLink}
@@ -140,7 +152,6 @@ export const Upcoming = () => {
         />
       )}
 
-      {/* INVALID EVENT */}
       {invalidEvent && (
         <ConfirmModal
           title="Подію не знайдено"

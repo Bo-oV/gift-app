@@ -2,13 +2,14 @@ import type { VisitedEvent } from "../types/visitedEvent";
 
 const STORAGE_KEY = "visitedEvents";
 
-export const getVisitedEvents = () => {
+export const getVisitedEvents = (): VisitedEvent[] => {
   const data = localStorage.getItem(STORAGE_KEY);
 
   if (!data) return [];
 
   try {
-    return JSON.parse(data);
+    const parsed = JSON.parse(data) as VisitedEvent[];
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
