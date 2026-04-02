@@ -11,6 +11,12 @@ import { Button } from "@/components/Button/Button";
 import { Link, Plus, Type, X } from "lucide-react";
 import { InlineLoader } from "./InlineLoader";
 
+type Preview = {
+  title: string;
+  description: string;
+  image?: string;
+};
+
 type Props = {
   eventId: string;
   onClose: () => void;
@@ -21,11 +27,12 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [purchaseUrl, setPurchaseUrl] = useState<string>("");
-  const [preview, setPreview] = useState<any>(null);
+  const [preview, setPreview] = useState<Preview | null>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewError, setPreviewError] = useState(false);
 
   const fetchPreview = async (url: string) => {
+    if (!url.startsWith("http")) return null;
     try {
       const res = await fetch(`https://api.microlink.io?url=${url}`);
       const data = await res.json();
@@ -69,6 +76,8 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
     const timeout = setTimeout(() => {
       setLoadingPreview(true);
       setPreviewError(false);
+      setPreview(null);
+
       fetchPreview(purchaseUrl)
         .then((data) => {
           if (!data) return;
@@ -77,7 +86,7 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
 
           setTitle((prev) => (prev ? prev : data.title));
 
-          setDescription(data.description.slice(0, 100));
+          setDescription((data.description || "").slice(0, 100));
         })
         .finally(() => setLoadingPreview(false));
     }, 600);
@@ -172,7 +181,7 @@ export const AddGiftModal = ({ eventId, onClose, event }: Props) => {
           text="Додати"
           icon={<Plus size={16} />}
           variant="ghost"
-          disabled={!isValid && !isFormValid}
+          disabled={!isValid || !isFormValid}
           onClick={handleSubmit}
         />
       </div>
