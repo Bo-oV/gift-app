@@ -67,6 +67,7 @@ export const EventPage = () => {
 
     try {
       await deleteEventWithGifts(eventId);
+      setShowDeleteConfirm(false);
       navigate("/home");
     } catch (error) {
       console.error(error);
@@ -249,10 +250,7 @@ export const EventPage = () => {
           text="Цю дію неможливо скасувати"
           confirmText="Видалити"
           onCancel={() => setShowDeleteConfirm(false)}
-          onConfirm={async () => {
-            setShowDeleteConfirm(false);
-            await handleDeleteEvent();
-          }}
+          onConfirm={handleDeleteEvent}
         />
       )}
       {/* GIFTS */}

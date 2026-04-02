@@ -181,6 +181,7 @@ export const Home = () => {
               setEvents((prev) => prev.filter((e) => e.id !== deleteEventId));
               setDeleteEventId(null);
               setActiveEventId(null);
+              setShowDeleteConfirm(false);
             } catch (e) {
               console.error(e);
             }
