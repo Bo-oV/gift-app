@@ -28,6 +28,7 @@ type EventType = {
 
 export const Home = () => {
   const navigate = useNavigate();
+  const [deleteEventId, setDeleteEventId] = useState<string | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [shareModal, setShareModal] = useState<null | "qr" | "link" | "post">(
     null,
@@ -125,7 +126,7 @@ export const Home = () => {
           );
         }}
         onDelete={() => {
-          setActiveEventId(null);
+          setDeleteEventId(activeEventId);
           setShowDeleteConfirm(true);
         }}
         isOwner={true}
@@ -164,13 +165,25 @@ export const Home = () => {
           confirmText="Видалити"
           onCancel={() => setShowDeleteConfirm(false)}
           onConfirm={async () => {
-            if (!activeEventId) return;
+            console.log("DELETE CLICKED");
 
-            setShowDeleteConfirm(false);
+            if (!deleteEventId) {
+              console.log("deleteEventId is null");
+              return;
+            }
 
-            await deleteEventWithGifts(activeEventId);
+            console.log("Deleting event:", deleteEventId);
 
-            setEvents((prev) => prev.filter((e) => e.id !== activeEventId));
+            try {
+              await deleteEventWithGifts(deleteEventId);
+              console.log("Deleted in Firebase");
+
+              setEvents((prev) => prev.filter((e) => e.id !== deleteEventId));
+              setDeleteEventId(null);
+              setActiveEventId(null);
+            } catch (e) {
+              console.error(e);
+            }
           }}
         />
       )}
