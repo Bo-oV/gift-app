@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:942839081000:android:48a0f9614758b3e1192d1d",
+        "android_client_info": {
+          "package_name": "com.merlin.sviato.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942839081000-7ft1gv0gr0p39bq14opmal8guse1s1gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.merlin.sviato.app",
+            "certificate_hash": "89a270991715d4169909c99fc8541b09c1ade0a3"
+          }
+        },
+        {
+          "client_id": "942839081000-prn7u2cd03ht5a8oj0pe5s6209uk121r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUOS82uQg9WqmBELN3maI4-rRU-obdIjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942839081000-prn7u2cd03ht5a8oj0pe5s6209uk121r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:942839081000:android:ccd3a45b09fb4386192d1d",
         "android_client_info": {
           "package_name": "com.sviato.app"

@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.4",
+    "@capacitor/android": "^5.7.8",
+    "@capacitor/core": "^5.7.8",
     "@vercel/analytics": "^2.0.1",
     "canvas-confetti": "^1.9.4",
     "cheerio": "^1.2.0",
@@ -25,6 +26,7 @@
     "vite-plugin-pwa": "^1.2.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^5.7.8",
     "@eslint/js": "^9.39.4",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",

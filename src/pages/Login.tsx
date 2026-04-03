@@ -1,14 +1,26 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { signInWithGoogle } from "../firebase/auth";
+import { auth, signInWithGoogle } from "../firebase/auth";
 import { GoogleButton } from "../components/Button/GoogleButton";
-
+import { Capacitor } from "@capacitor/core";
 import "./login.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getRedirectResult } from "firebase/auth";
 
 export const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          console.log("WEB LOGIN SUCCESS");
+          navigate("/home", { replace: true });
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const from = location.state?.from?.pathname || "/home";
 
@@ -19,7 +31,9 @@ export const Login = () => {
 
       await signInWithGoogle();
 
-      navigate(from, { replace: true });
+      if (Capacitor.isNativePlatform()) {
+        navigate(from, { replace: true });
+      }
     } catch (error) {
       console.log(error);
     } finally {

@@ -8,7 +8,7 @@ type Props = {
   onSuccess: () => void;
 };
 
-export const LoginModal = ({ title = "Увійди", onClose, onSuccess }: Props) => {
+export const LoginModal = ({ title = "Увійди", onClose }: Props) => {
   return (
     <div className="login-modal">
       <div className="login-modal__backdrop" onClick={onClose} />
@@ -28,8 +28,8 @@ export const LoginModal = ({ title = "Увійди", onClose, onSuccess }: Props
           <GoogleButton
             onClick={async () => {
               const { signInWithGoogle } = await import("../../firebase/auth");
+
               await signInWithGoogle();
-              onSuccess();
             }}
           />
         </div>

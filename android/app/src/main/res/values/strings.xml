@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sviato  App</string>
+    <string name="title_activity_main">Sviato  App</string>
+    <string name="package_name">com.merlin.sviato.app</string>
+    <string name="server_client_id">942839081000-prn7u2cd03ht5a8oj0pe5s6209uk121r.apps.googleusercontent.com</string>
+    <string name="custom_url_scheme">com.merlin.sviato.app</string>
+</resources>
