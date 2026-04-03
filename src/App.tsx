@@ -1,5 +1,5 @@
 import "./App.scss";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/useAuth";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -14,9 +14,25 @@ import { EventPage } from "./pages/EventPage";
 import { Upcoming } from "./pages/Upcoming";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppLoader } from "./pages/components/AppLoader";
-
+import { App as CapApp } from "@capacitor/app";
+import { useEffect } from "react";
 function App() {
   const { loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const listener = CapApp.addListener("appUrlOpen", (event) => {
+      console.log("URL:", event.url);
+
+      if (event.url.includes("sviato.vercel.app")) {
+        navigate("/home", { replace: true });
+      }
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, [navigate]);
 
   if (loading) {
     return <AppLoader />;

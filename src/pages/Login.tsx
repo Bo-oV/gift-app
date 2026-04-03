@@ -4,7 +4,7 @@ import { GoogleButton } from "../components/Button/GoogleButton";
 import { Capacitor } from "@capacitor/core";
 import "./login.scss";
 import { useEffect, useState } from "react";
-import { getRedirectResult } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const Login = () => {
   const location = useLocation();
@@ -12,14 +12,14 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          console.log("WEB LOGIN SUCCESS");
-          navigate("/home", { replace: true });
-        }
-      })
-      .catch(console.error);
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("USER DETECTED", user);
+        navigate("/home", { replace: true });
+      }
+    });
+
+    return () => unsub();
   }, []);
 
   const from = location.state?.from?.pathname || "/home";

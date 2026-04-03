@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.merlin.sviato.app",
+      "sha256_cert_fingerprints": [
+        "C1:58:BB:C6:4D:62:8B:91:69:F8:D6:FA:9D:62:A3:35:FB:3A:46:2F:3F:AD:7E:01:71:65:88:89:72:C2:68:2F"
+      ]
+    }
+  }
+]
