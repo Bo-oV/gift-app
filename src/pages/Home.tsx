@@ -28,13 +28,15 @@ type EventType = {
 
 export const Home = () => {
   const navigate = useNavigate();
-  const [deleteEventId, setDeleteEventId] = useState<string | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [shareModal, setShareModal] = useState<null | "qr" | "link" | "post">(
     null,
   );
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [pendingDeleteEventId, setPendingDeleteEventId] = useState<
+    string | null
+  >(null);
 
   const [activeEventId, setActiveEventId] = useState<string | null>(null);
   const { user, loading: authLoading } = useAuth();
@@ -126,7 +128,8 @@ export const Home = () => {
           );
         }}
         onDelete={() => {
-          setDeleteEventId(activeEventId);
+          setPendingDeleteEventId(activeEventId);
+          setActiveEventId(null);
           setShowDeleteConfirm(true);
         }}
         isOwner={true}
@@ -163,28 +166,21 @@ export const Home = () => {
           title="Видалити подію?"
           text="Цю дію неможливо скасувати"
           confirmText="Видалити"
-          onCancel={() => setShowDeleteConfirm(false)}
+          onCancel={() => {
+            setShowDeleteConfirm(false);
+            setPendingDeleteEventId(null);
+          }}
           onConfirm={async () => {
-            console.log("DELETE CLICKED");
+            if (!pendingDeleteEventId) return;
 
-            if (!deleteEventId) {
-              console.log("deleteEventId is null");
-              return;
-            }
+            setShowDeleteConfirm(false);
+            setPendingDeleteEventId(null);
 
-            console.log("Deleting event:", deleteEventId);
+            await deleteEventWithGifts(pendingDeleteEventId);
 
-            try {
-              await deleteEventWithGifts(deleteEventId);
-              console.log("Deleted in Firebase");
-
-              setEvents((prev) => prev.filter((e) => e.id !== deleteEventId));
-              setDeleteEventId(null);
-              setActiveEventId(null);
-              setShowDeleteConfirm(false);
-            } catch (e) {
-              console.error(e);
-            }
+            setEvents((prev) =>
+              prev.filter((e) => e.id !== pendingDeleteEventId),
+            );
           }}
         />
       )}

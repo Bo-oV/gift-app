@@ -1,12 +1,24 @@
 import { initializeApp } from "firebase/app";
 
+const getAuthDomain = () => {
+  if (typeof window === "undefined") {
+    return import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+  }
+
+  const { hostname } = window.location;
+  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  return isLocalhost ? import.meta.env.VITE_FIREBASE_AUTH_DOMAIN : hostname;
+};
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBLV0bTJ7fR9bye2BfD-2kSxMUv-KQ_o_Q",
-  authDomain: "gift-app-dmpa.vercel.app",
-  projectId: "gift-app-f36f2",
-  storageBucket: "gift-app-f36f2.appspot.com",
-  messagingSenderId: "942839081000",
-  appId: "1:942839081000:web:7b14cae9a395b241192d1d",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: getAuthDomain(),
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);

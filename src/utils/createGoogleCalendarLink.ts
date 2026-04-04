@@ -1,13 +1,22 @@
 export function createGoogleCalendarLink(event: { title: string; date: any }) {
-  const d = new Date(event.date.toDate());
+  const startDate = new Date(
+    typeof event.date?.toDate === "function" ? event.date.toDate() : event.date,
+  );
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + 1);
 
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
+  const formatCalendarDate = (value: Date) => {
+    const yyyy = value.getFullYear();
+    const mm = String(value.getMonth() + 1).padStart(2, "0");
+    const dd = String(value.getDate()).padStart(2, "0");
 
-  const formatted = `${yyyy}${mm}${dd}`;
+    return `${yyyy}${mm}${dd}`;
+  };
 
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE
-    &text=${encodeURIComponent(event.title)}
-    &dates=${formatted}/${formatted}`;
+  const start = formatCalendarDate(startDate);
+  const end = formatCalendarDate(endDate);
+
+  return `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(
+    event.title,
+  )}&dates=${start}%2F${end}`;
 }

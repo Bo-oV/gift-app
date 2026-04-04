@@ -1,28 +1,25 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { auth, signInWithGoogle } from "../firebase/auth";
-import { GoogleButton } from "../components/Button/GoogleButton";
-import { Capacitor } from "@capacitor/core";
-import "./login.scss";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { useLocation, useNavigate } from "react-router-dom";
+import { signInWithGoogle } from "../firebase/auth";
+import { GoogleButton } from "../components/Button/GoogleButton";
+import { useAuth } from "../context/useAuth";
+import { toast } from "react-hot-toast";
+
+import "./login.scss";
 
 export const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("USER DETECTED", user);
-        navigate("/home", { replace: true });
-      }
-    });
-
-    return () => unsub();
-  }, []);
-
   const from = location.state?.from?.pathname || "/home";
+
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [from, navigate, user]);
 
   const handleLogin = async () => {
     try {
@@ -30,12 +27,9 @@ export const Login = () => {
       await new Promise((res) => setTimeout(res, 600));
 
       await signInWithGoogle();
-
-      if (Capacitor.isNativePlatform()) {
-        navigate(from, { replace: true });
-      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Не вдалося увійти через Google");
     } finally {
       setLoading(false);
     }

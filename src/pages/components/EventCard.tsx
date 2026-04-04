@@ -28,8 +28,8 @@ export const EventCard = ({
   eventId,
   onShare,
 }: Props) => {
-  const [total, setTotal] = useState<number | null>(null);
-  const [reserved, setReserved] = useState<number | null>(null);
+  const [total, setTotal] = useState(0);
+  const [reserved, setReserved] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {

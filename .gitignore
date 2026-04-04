@@ -37,3 +37,4 @@ local.properties
 # binaries
 *.apk
 *.aab
+.vercel
