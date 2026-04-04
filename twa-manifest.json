@@ -20,8 +20,8 @@
     "path": "D:\\Portfolio\\gift-app\\android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "1.2.2",
+  "appVersionCode": 6,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://sviato.vercel.app/manifest.webmanifest",
@@ -36,12 +36,17 @@
   "fullScopeUrl": "https://sviato.vercel.app/",
   "minSdkVersion": 21,
   "orientation": "portrait",
-  "fingerprints": [],
+  "fingerprints": [
+    {
+      "name": "release",
+      "value": "A5:F0:A2:70:56:E5:6C:47:5A:C6:F6:1A:54:17:33:67:B4:AD:04:FB:7A:9D:F8:8A:B9:B5:E5:73:82:57:2B:74"
+    }
+  ],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
   "fileHandlers": [],
   "launchHandlerClientMode": "",
   "displayOverride": [],
-  "appVersion": "1"
+  "appVersion": "1.2.2"
 }

@@ -28,8 +28,11 @@ export const LoginModal = ({ title = "Увійди", onClose, onSuccess }: Props
           <GoogleButton
             onClick={async () => {
               const { signInWithGoogle } = await import("../../firebase/auth");
-              await signInWithGoogle();
-              onSuccess();
+              const result = await signInWithGoogle();
+
+              if (result) {
+                onSuccess();
+              }
             }}
           />
         </div>

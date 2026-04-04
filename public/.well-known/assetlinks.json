@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.sviato.app",
+      "sha256_cert_fingerprints": [
+        "A9:39:01:96:D0:65:E3:34:A7:F2:85:B0:5C:E9:52:C6:70:09:62:D3:20:BF:6E:01:F7:39:CC:D4:ED:07:B8:A8"
+      ]
+    }
+  }
+]
