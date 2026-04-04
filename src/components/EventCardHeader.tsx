@@ -7,8 +7,8 @@ type Props = {
   ownerName?: string;
   title: string;
   date?: string;
-  reserved: number | null;
-  total: number | null;
+  reserved: number;
+  total: number;
   onActionsClick?: (e: React.MouseEvent) => void;
 };
 
@@ -45,7 +45,7 @@ export const EventCardHeader = ({
         {date && <span className="event-card-header__date">{date}</span>}
 
         <span className="event-card-header__count">
-          {total === null ? "..." : `${reserved}/${total}`}
+          {`${reserved}/${total}`}
           <Gift size={14} />
         </span>
       </div>

@@ -34,6 +34,9 @@ export const Home = () => {
   );
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [pendingDeleteEventId, setPendingDeleteEventId] = useState<
+    string | null
+  >(null);
 
   const [activeEventId, setActiveEventId] = useState<string | null>(null);
   const { user, loading: authLoading } = useAuth();
@@ -125,6 +128,7 @@ export const Home = () => {
           );
         }}
         onDelete={() => {
+          setPendingDeleteEventId(activeEventId);
           setActiveEventId(null);
           setShowDeleteConfirm(true);
         }}
@@ -162,15 +166,21 @@ export const Home = () => {
           title="Видалити подію?"
           text="Цю дію неможливо скасувати"
           confirmText="Видалити"
-          onCancel={() => setShowDeleteConfirm(false)}
+          onCancel={() => {
+            setShowDeleteConfirm(false);
+            setPendingDeleteEventId(null);
+          }}
           onConfirm={async () => {
-            if (!activeEventId) return;
+            if (!pendingDeleteEventId) return;
 
             setShowDeleteConfirm(false);
+            setPendingDeleteEventId(null);
 
-            await deleteEventWithGifts(activeEventId);
+            await deleteEventWithGifts(pendingDeleteEventId);
 
-            setEvents((prev) => prev.filter((e) => e.id !== activeEventId));
+            setEvents((prev) =>
+              prev.filter((e) => e.id !== pendingDeleteEventId),
+            );
           }}
         />
       )}
