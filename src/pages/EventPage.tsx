@@ -90,6 +90,10 @@ export const EventPage = () => {
         .catch(() => toast.error("Помилка"));
     }
 
+    if (pendingAction.type === "share") {
+      setShareOpen(true);
+    }
+
     setPendingAction(null);
   };
 
@@ -135,6 +139,15 @@ export const EventPage = () => {
 
   if (loading || !event) return <AppLoader />;
   const eventLink = `${window.location.origin}/event/${eventId}`;
+  const shareDateLabel = new Intl.DateTimeFormat("uk-UA", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(event.date.toDate());
+  const shareUserName =
+    user?.displayName?.trim() ||
+    event.ownerName?.trim() ||
+    "Ім'я користувача";
   return (
     <div className="event-page">
       {/* HEADER */}
@@ -331,6 +344,9 @@ export const EventPage = () => {
         <ShareModal
           link={eventLink}
           mode={shareModal}
+          title={event.title}
+          userName={shareUserName}
+          dateLabel={shareDateLabel}
           onClose={() => setShareModal(null)}
         />
       )}

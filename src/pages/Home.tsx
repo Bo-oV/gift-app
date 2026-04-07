@@ -32,6 +32,7 @@ export const Home = () => {
   const [shareModal, setShareModal] = useState<null | "qr" | "link" | "post">(
     null,
   );
+  const [shareEventId, setShareEventId] = useState<string | null>(null);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [pendingDeleteEventId, setPendingDeleteEventId] = useState<
@@ -44,8 +45,9 @@ export const Home = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleShare = () => {
+  const handleShare = (eventId: string) => {
     setActiveEventId(null);
+    setShareEventId(eventId);
     setShareOpen(true);
   };
 
@@ -71,12 +73,23 @@ export const Home = () => {
   }, [user]);
 
   const activeEvent = events.find((e) => e.id === activeEventId);
+  const shareEvent = events.find((event) => event.id === shareEventId) ?? null;
 
   if (loading) {
     return <AppLoader />;
   }
 
-  const eventLink = `${window.location.origin}/event/${activeEventId}`;
+  const eventLink = shareEvent
+    ? `${window.location.origin}/event/${shareEvent.id}`
+    : window.location.origin;
+  const shareEventDateLabel = shareEvent
+    ? new Intl.DateTimeFormat("uk-UA", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }).format(shareEvent.date.toDate())
+    : "Дата події";
+  const shareUserName = user?.displayName?.trim() || "Ім'я користувача";
   return (
     <div className="home">
       {events.length === 0 ? (
@@ -109,7 +122,7 @@ export const Home = () => {
             date={event.date}
             eventId={event.id}
             onOpenActions={() => setActiveEventId(event.id)}
-            onShare={() => handleShare()}
+            onShare={() => handleShare(event.id)}
           />
         ))
       )}
@@ -157,7 +170,13 @@ export const Home = () => {
         <ShareModal
           link={eventLink}
           mode={shareModal}
-          onClose={() => setShareModal(null)}
+          title={shareEvent?.title}
+          userName={shareUserName}
+          dateLabel={shareEventDateLabel}
+          onClose={() => {
+            setShareModal(null);
+            setShareEventId(null);
+          }}
         />
       )}
 

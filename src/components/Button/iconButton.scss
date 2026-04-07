@@ -9,11 +9,16 @@
   background: none;
   border: none;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
   svg {
     width: 16px;
     height: 16px;
     color: $color-text-main;
     stroke-width: 2;
+    user-select: none;
+    -webkit-user-select: none;
   }
 }

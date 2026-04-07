@@ -14,23 +14,41 @@ import { EventPage } from "./pages/EventPage";
 import { Upcoming } from "./pages/Upcoming";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppLoader } from "./pages/components/AppLoader";
-import { App as CapApp } from "@capacitor/app";
 import { useEffect } from "react";
+
 function App() {
   const { loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const listener = CapApp.addListener("appUrlOpen", (event) => {
-      console.log("URL:", event.url);
-
-      if (event.url.includes("sviato.vercel.app")) {
-        navigate("/home", { replace: true });
+    let removeListener: (() => Promise<void>) | undefined;
+    const capacitorApp = (
+      window as Window & {
+        Capacitor?: {
+          Plugins?: {
+            App?: {
+              addListener?: (
+                eventName: string,
+                listener: (event: { url: string }) => void,
+              ) => Promise<{ remove: () => Promise<void> }>;
+            };
+          };
+        };
       }
-    });
+    ).Capacitor?.Plugins?.App;
+
+    if (capacitorApp?.addListener) {
+      void capacitorApp.addListener("appUrlOpen", (event) => {
+        if (event.url.includes("sviato.vercel.app")) {
+          navigate("/home", { replace: true });
+        }
+      }).then((listener) => {
+        removeListener = () => listener.remove();
+      });
+    }
 
     return () => {
-      listener.remove();
+      void removeListener?.();
     };
   }, [navigate]);
 

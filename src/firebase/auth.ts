@@ -2,6 +2,7 @@ import {
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
+  signInWithPopup,
   signInWithRedirect,
 } from "firebase/auth";
 import { app } from "./config";
@@ -14,6 +15,25 @@ provider.setCustomParameters({
 
 const REDIRECT_PENDING_KEY = "google_redirect_pending";
 
+const shouldUseRedirectSignIn = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const { hostname } = window.location;
+  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  if (isLocalhost) {
+    return false;
+  }
+
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isAndroid = userAgent.includes("android");
+  const isIOS = /iphone|ipad|ipod/.test(userAgent);
+
+  return isAndroid || isIOS;
+};
+
 export const hasPendingGoogleRedirectSignIn = () => {
   if (typeof window === "undefined") {
     return false;
@@ -23,6 +43,10 @@ export const hasPendingGoogleRedirectSignIn = () => {
 };
 
 export const signInWithGoogle = async () => {
+  if (!shouldUseRedirectSignIn()) {
+    return await signInWithPopup(auth, provider);
+  }
+
   sessionStorage.setItem(REDIRECT_PENDING_KEY, "1");
   await signInWithRedirect(auth, provider);
   return null;

@@ -11,6 +11,9 @@
   backdrop-filter: blur(12px);
 
   border: 1px solid rgba($color-white, 0.4);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
   font-size: 14px;
   font-weight: 500;
@@ -37,5 +40,7 @@
   svg {
     width: 20px;
     height: 20px;
+    user-select: none;
+    -webkit-user-select: none;
   }
 }
