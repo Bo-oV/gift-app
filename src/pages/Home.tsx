@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { EventActionsSheet } from "./components/EventActionsSheet";
 import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
+import { getAppBaseUrl, getEventShareLink } from "@/utils/getEventShareLink";
 import { ShareModal } from "./components/ShareModal";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { deleteEventWithGifts } from "./services/eventService";
@@ -80,8 +81,8 @@ export const Home = () => {
   }
 
   const eventLink = shareEvent
-    ? `${window.location.origin}/event/${shareEvent.id}`
-    : window.location.origin;
+    ? getEventShareLink(shareEvent.id)
+    : getAppBaseUrl();
   const shareEventDateLabel = shareEvent
     ? new Intl.DateTimeFormat("uk-UA", {
         day: "2-digit",

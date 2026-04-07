@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getEventShareLink } from "@/utils/getEventShareLink";
 
 export const useShare = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -6,7 +7,7 @@ export const useShare = () => {
 
   const openShare = (eventId: string) => {
     if (!eventId) return;
-    const generatedLink = `${window.location.origin}/event/${eventId}`;
+    const generatedLink = getEventShareLink(eventId);
     setLink(generatedLink);
     setIsOpen(true);
   };

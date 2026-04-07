@@ -11,6 +11,7 @@ import "../pages/upcoming.scss";
 import { EventActionsSheet } from "./components/EventActionsSheet";
 import { ShareModal } from "./components/ShareModal";
 import { AppLoader } from "./components/AppLoader";
+import { getEventShareLink } from "@/utils/getEventShareLink";
 
 type EventWithStats = VisitedEvent & {
   total: number;
@@ -95,7 +96,15 @@ export const Upcoming = () => {
     setShareOpen(true);
   };
 
-  const eventLink = `${window.location.origin}/event/${activeEventId}`;
+  const activeEvent = eventsWithStats.find((event) => event.eventId === activeEventId);
+  const eventLink = activeEventId ? getEventShareLink(activeEventId) : "";
+  const shareDateLabel = activeEvent
+    ? new Intl.DateTimeFormat("uk-UA", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }).format(new Date(activeEvent.date))
+    : "Дата події";
 
   // loading state
   if (loading) {
@@ -148,6 +157,9 @@ export const Upcoming = () => {
         <ShareModal
           link={eventLink}
           mode={shareModal}
+          title={activeEvent?.title}
+          userName="Sviato"
+          dateLabel={shareDateLabel}
           onClose={() => setShareModal(null)}
         />
       )}

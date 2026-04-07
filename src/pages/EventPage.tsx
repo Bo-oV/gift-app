@@ -29,6 +29,7 @@ import { IconButton } from "@/components/Button/IconButton";
 import { MoreVertical } from "lucide-react";
 import { EventActionsSheet } from "./components/EventActionsSheet";
 import { createGoogleCalendarLink } from "@/utils/createGoogleCalendarLink";
+import { getEventShareLink } from "@/utils/getEventShareLink";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { Calendar } from "lucide-react";
 import { ShareModal } from "./components/ShareModal";
@@ -138,7 +139,7 @@ export const EventPage = () => {
   const total = gifts.length;
 
   if (loading || !event) return <AppLoader />;
-  const eventLink = `${window.location.origin}/event/${eventId}`;
+  const eventLink = eventId ? getEventShareLink(eventId) : "";
   const shareDateLabel = new Intl.DateTimeFormat("uk-UA", {
     day: "2-digit",
     month: "2-digit",
