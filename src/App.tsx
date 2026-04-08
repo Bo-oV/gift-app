@@ -14,6 +14,7 @@ import { EventPage } from "./pages/EventPage";
 import { Upcoming } from "./pages/Upcoming";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppLoader } from "./pages/components/AppLoader";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const { loading } = useAuth();
@@ -79,6 +80,7 @@ function App() {
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
       <Toaster position="top-right" />
+      <Analytics />
       <div className="background">
         <div className="background__circle background__circle--top"></div>
         <div className="background__circle background__circle--mid"></div>
